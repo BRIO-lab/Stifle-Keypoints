@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/etl.py", line 67, in <module>
+    header = ['grid', config.datset['MODEL_TYPE'] + '_kps']
+AttributeError: 'Configuration' object has no attribute 'datset'

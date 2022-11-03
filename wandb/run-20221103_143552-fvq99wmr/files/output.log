@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/etl.py", line 49, in <module>
+    KP_PATH = os.cwd() + '/' + KP_DIR
+AttributeError: module 'os' has no attribute 'cwd'

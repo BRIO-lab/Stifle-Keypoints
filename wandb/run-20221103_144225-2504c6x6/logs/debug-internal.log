@@ -1,0 +1,162 @@
+2022-11-03 14:42:25,996 INFO    StreamThr :18739 [internal.py:wandb_internal():88] W&B internal server running at pid: 18739, started at: 2022-11-03 14:42:25.996469
+2022-11-03 14:42:25,997 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: status
+2022-11-03 14:42:25,998 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: status
+2022-11-03 14:42:25,999 DEBUG   SenderThread:18739 [sender.py:send():301] send: header
+2022-11-03 14:42:25,999 INFO    WriterThread:18739 [datastore.py:open_for_write():75] open: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/run-2504c6x6.wandb
+2022-11-03 14:42:26,006 DEBUG   SenderThread:18739 [sender.py:send():301] send: run
+2022-11-03 14:42:26,276 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: check_version
+2022-11-03 14:42:26,277 INFO    SenderThread:18739 [dir_watcher.py:__init__():216] watching files in: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files
+2022-11-03 14:42:26,277 INFO    SenderThread:18739 [sender.py:_start_run_threads():912] run started: 2504c6x6 with start time 1667500945.994425
+2022-11-03 14:42:26,277 DEBUG   SenderThread:18739 [sender.py:send():301] send: summary
+2022-11-03 14:42:26,277 INFO    SenderThread:18739 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-11-03 14:42:26,277 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: check_version
+2022-11-03 14:42:26,346 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: run_start
+2022-11-03 14:42:26,351 DEBUG   HandlerThread:18739 [meta.py:__init__():34] meta init
+2022-11-03 14:42:26,352 DEBUG   HandlerThread:18739 [meta.py:__init__():49] meta init done
+2022-11-03 14:42:26,352 DEBUG   HandlerThread:18739 [meta.py:probe():215] probe
+2022-11-03 14:42:26,357 DEBUG   HandlerThread:18739 [meta.py:_setup_git():205] setup git
+2022-11-03 14:42:26,365 DEBUG   HandlerThread:18739 [meta.py:_setup_git():212] setup git done
+2022-11-03 14:42:26,365 DEBUG   HandlerThread:18739 [meta.py:_save_pip():53] save pip
+2022-11-03 14:42:26,366 DEBUG   HandlerThread:18739 [meta.py:_save_pip():67] save pip done
+2022-11-03 14:42:26,366 DEBUG   HandlerThread:18739 [meta.py:_save_conda():74] save conda
+2022-11-03 14:42:27,278 INFO    Thread-13 :18739 [dir_watcher.py:_on_file_created():275] file/dir created: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/requirements.txt
+2022-11-03 14:42:27,278 INFO    Thread-13 :18739 [dir_watcher.py:_on_file_created():275] file/dir created: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/wandb-summary.json
+2022-11-03 14:42:27,278 INFO    Thread-13 :18739 [dir_watcher.py:_on_file_created():275] file/dir created: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/conda-environment.yaml
+2022-11-03 14:42:28,767 DEBUG   HandlerThread:18739 [meta.py:_save_conda():84] save conda done
+2022-11-03 14:42:28,768 DEBUG   HandlerThread:18739 [meta.py:probe():253] probe done
+2022-11-03 14:42:28,801 DEBUG   SenderThread:18739 [sender.py:send():301] send: files
+2022-11-03 14:42:28,801 INFO    SenderThread:18739 [sender.py:_save_file():1155] saving file wandb-metadata.json with policy now
+2022-11-03 14:42:28,805 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: stop_status
+2022-11-03 14:42:28,805 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: stop_status
+2022-11-03 14:42:28,913 DEBUG   SenderThread:18739 [sender.py:send():301] send: telemetry
+2022-11-03 14:42:28,967 DEBUG   SenderThread:18739 [sender.py:send():301] send: exit
+2022-11-03 14:42:28,967 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:28,968 INFO    SenderThread:18739 [sender.py:send_exit():437] handling exit code: 1
+2022-11-03 14:42:28,968 INFO    SenderThread:18739 [sender.py:send_exit():439] handling runtime: 2
+2022-11-03 14:42:28,968 INFO    SenderThread:18739 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-11-03 14:42:28,968 INFO    SenderThread:18739 [sender.py:send_exit():445] send defer
+2022-11-03 14:42:28,968 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:28,968 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:28,968 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 0
+2022-11-03 14:42:28,969 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:28,969 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 0
+2022-11-03 14:42:28,969 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 1
+2022-11-03 14:42:28,969 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:28,969 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 1
+2022-11-03 14:42:28,991 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:28,991 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 1
+2022-11-03 14:42:28,991 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 2
+2022-11-03 14:42:28,991 DEBUG   SenderThread:18739 [sender.py:send():301] send: stats
+2022-11-03 14:42:28,992 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:28,992 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 2
+2022-11-03 14:42:28,992 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:28,992 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 2
+2022-11-03 14:42:28,992 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 3
+2022-11-03 14:42:28,992 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:28,992 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 3
+2022-11-03 14:42:28,992 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:28,992 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 3
+2022-11-03 14:42:28,992 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 4
+2022-11-03 14:42:28,992 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:28,993 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 4
+2022-11-03 14:42:28,993 DEBUG   SenderThread:18739 [sender.py:send():301] send: summary
+2022-11-03 14:42:28,993 INFO    SenderThread:18739 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-11-03 14:42:28,993 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:28,993 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 4
+2022-11-03 14:42:28,993 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 5
+2022-11-03 14:42:28,993 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:28,993 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 5
+2022-11-03 14:42:28,993 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:28,993 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 5
+2022-11-03 14:42:29,069 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:29,129 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 6
+2022-11-03 14:42:29,129 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:29,129 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:29,129 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 6
+2022-11-03 14:42:29,129 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:29,129 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 6
+2022-11-03 14:42:29,230 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:29,279 INFO    Thread-13 :18739 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/wandb-summary.json
+2022-11-03 14:42:29,279 INFO    Thread-13 :18739 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/config.yaml
+2022-11-03 14:42:29,279 INFO    Thread-13 :18739 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/conda-environment.yaml
+2022-11-03 14:42:29,279 INFO    Thread-13 :18739 [dir_watcher.py:_on_file_created():275] file/dir created: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/wandb-metadata.json
+2022-11-03 14:42:29,279 INFO    Thread-13 :18739 [dir_watcher.py:_on_file_created():275] file/dir created: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/output.log
+2022-11-03 14:42:29,304 INFO    Thread-17 :18739 [upload_job.py:push():139] Uploaded file /tmp/tmprhcrl_a_wandb/2113chzg-wandb-metadata.json
+2022-11-03 14:42:30,925 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 7
+2022-11-03 14:42:30,925 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:30,927 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:30,927 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 7
+2022-11-03 14:42:30,927 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:30,927 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 7
+2022-11-03 14:42:30,927 INFO    SenderThread:18739 [dir_watcher.py:finish():362] shutting down directory watcher
+2022-11-03 14:42:31,027 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:31,279 INFO    Thread-13 :18739 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/output.log
+2022-11-03 14:42:31,280 INFO    SenderThread:18739 [dir_watcher.py:finish():392] scan: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files
+2022-11-03 14:42:31,280 INFO    SenderThread:18739 [dir_watcher.py:finish():406] scan save: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/wandb-summary.json wandb-summary.json
+2022-11-03 14:42:31,280 INFO    SenderThread:18739 [dir_watcher.py:finish():406] scan save: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/conda-environment.yaml conda-environment.yaml
+2022-11-03 14:42:31,280 INFO    SenderThread:18739 [dir_watcher.py:finish():406] scan save: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/wandb-metadata.json wandb-metadata.json
+2022-11-03 14:42:31,280 INFO    SenderThread:18739 [dir_watcher.py:finish():406] scan save: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/output.log output.log
+2022-11-03 14:42:31,280 INFO    SenderThread:18739 [dir_watcher.py:finish():406] scan save: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/config.yaml config.yaml
+2022-11-03 14:42:31,280 INFO    SenderThread:18739 [dir_watcher.py:finish():406] scan save: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/requirements.txt requirements.txt
+2022-11-03 14:42:31,282 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 8
+2022-11-03 14:42:31,282 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:31,284 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:31,284 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 8
+2022-11-03 14:42:31,289 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:31,289 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 8
+2022-11-03 14:42:31,289 INFO    SenderThread:18739 [file_pusher.py:finish():168] shutting down file pusher
+2022-11-03 14:42:31,384 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:31,384 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:31,485 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:31,485 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:31,586 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:31,586 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:31,687 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:31,687 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:31,745 INFO    Thread-18 :18739 [upload_job.py:push():139] Uploaded file /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/wandb-summary.json
+2022-11-03 14:42:31,770 INFO    Thread-20 :18739 [upload_job.py:push():139] Uploaded file /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/output.log
+2022-11-03 14:42:31,788 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:31,788 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:31,827 INFO    Thread-21 :18739 [upload_job.py:push():139] Uploaded file /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/config.yaml
+2022-11-03 14:42:31,889 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:31,889 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:31,913 INFO    Thread-19 :18739 [upload_job.py:push():139] Uploaded file /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/conda-environment.yaml
+2022-11-03 14:42:31,916 INFO    Thread-22 :18739 [upload_job.py:push():139] Uploaded file /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/files/requirements.txt
+2022-11-03 14:42:31,990 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:31,990 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:32,090 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:32,091 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:32,116 INFO    Thread-12 :18739 [sender.py:transition_state():458] send defer: 9
+2022-11-03 14:42:32,116 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:32,116 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 9
+2022-11-03 14:42:32,117 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:32,117 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 9
+2022-11-03 14:42:32,191 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:32,218 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 10
+2022-11-03 14:42:32,218 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:32,218 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:32,218 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 10
+2022-11-03 14:42:32,218 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:32,218 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 10
+2022-11-03 14:42:32,218 INFO    SenderThread:18739 [sender.py:transition_state():458] send defer: 11
+2022-11-03 14:42:32,219 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: defer
+2022-11-03 14:42:32,219 DEBUG   SenderThread:18739 [sender.py:send():301] send: final
+2022-11-03 14:42:32,219 DEBUG   SenderThread:18739 [sender.py:send():301] send: footer
+2022-11-03 14:42:32,219 INFO    HandlerThread:18739 [handler.py:handle_request_defer():161] handle defer: 11
+2022-11-03 14:42:32,219 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: defer
+2022-11-03 14:42:32,219 INFO    SenderThread:18739 [sender.py:send_request_defer():454] handle sender defer: 11
+2022-11-03 14:42:32,319 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: poll_exit
+2022-11-03 14:42:32,319 DEBUG   SenderThread:18739 [sender.py:send_request():315] send_request: poll_exit
+2022-11-03 14:42:32,319 INFO    SenderThread:18739 [file_pusher.py:join():173] waiting for file pusher
+2022-11-03 14:42:32,632 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: sampled_history
+2022-11-03 14:42:32,632 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: get_summary
+2022-11-03 14:42:32,633 INFO    MainThread:18739 [wandb_run.py:_footer_history_summary_info():3321] rendering history
+2022-11-03 14:42:32,633 INFO    MainThread:18739 [wandb_run.py:_footer_history_summary_info():3353] rendering summary
+2022-11-03 14:42:32,633 INFO    MainThread:18739 [wandb_run.py:_footer_sync_info():3277] logging synced files
+2022-11-03 14:42:32,633 DEBUG   HandlerThread:18739 [handler.py:handle_request():138] handle_request: shutdown
+2022-11-03 14:42:32,633 INFO    HandlerThread:18739 [handler.py:finish():807] shutting down handler
+2022-11-03 14:42:33,219 INFO    WriterThread:18739 [datastore.py:close():279] close: /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_144225-2504c6x6/run-2504c6x6.wandb
+2022-11-03 14:42:33,531 INFO    SenderThread:18739 [sender.py:finish():1315] shutting down sender
+2022-11-03 14:42:33,532 INFO    SenderThread:18739 [file_pusher.py:finish():168] shutting down file pusher
+2022-11-03 14:42:33,532 INFO    SenderThread:18739 [file_pusher.py:join():173] waiting for file pusher
+2022-11-03 14:42:33,635 INFO    MainThread:18739 [internal.py:handle_exit():78] Internal process exited
