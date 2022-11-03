@@ -19,8 +19,8 @@ class KeypointNetModule(pl.LightningModule):
         super().__init__()
         self.save_hyperparameters("learning_rate")
         self.config = config    
-        self.pose_hrnet = PoseHighResolutionNet(num_key_points=self.config.segmentation_net_module['NUM_KEY_POINTS'],
-                                                num_image_channels=self.config.segmentation_net_module['NUM_IMG_CHANNELS'])
+        self.pose_hrnet = PoseHighResolutionNet(num_key_points=self.config.dataset['NUM_KEY_POINTS'],
+                                                num_image_channels=self.config.dataset['IMG_CHANNELS'])
         #self.pose_hrnet = pose_hrnet
         print("Pose HRNet is on device " + str(next(self.pose_hrnet.parameters()).get_device()))     # testing line
         print("Is Pose HRNet on GPU? " + str(next(self.pose_hrnet.parameters()).is_cuda))            # testing line
@@ -28,7 +28,7 @@ class KeypointNetModule(pl.LightningModule):
         print("Pose HRNet is on device " + str(next(self.pose_hrnet.parameters()).get_device()))     # testing line
         print("Is Pose HRNet on GPU? " + str(next(self.pose_hrnet.parameters()).is_cuda))            # testing line
         self.wandb_run = wandb_run
-        self.loss_fn = torch.nn.BCEWithLogitsLoss()
+        self.loss_fn = torch.nn.MSELoss()
         #print(self.pose_hrnet.get_device())
 
     def forward(self, x):

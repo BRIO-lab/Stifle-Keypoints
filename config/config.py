@@ -43,14 +43,36 @@ class Configuration:
             'IMAGE_WIDTH': 1024,
             'MODEL_TYPE': 'fem',        # how should we do this? not clear this is still best...
             'CLASS_LABELS': {0: 'bone', 1: 'background'},
+            'NUM_KEY_POINTS': 128,
             'IMG_CHANNELS': 1,      # Is this differnt from self.module['NUM_IMAGE_CHANNELS']
+            'STORE_DATA_RAM': False,
             'IMAGE_THRESHOLD': 0,
-            'USE_ALBUMENTATIONS': True
+            'USE_ALBUMENTATIONS': True,
+
+            'NUM_PRINT_IMG' : 1,
+            'KP_PLOT_RAD' : 3,
+
+            'NUM_POINTS' : 128,
+
+            'GAUSSIAN_STDEV_HEATMAP' : 5,
+            'GAUSSIAN_AMP' : 1e6,
+
+            'STORE_DATA_RAM' : False,
+
+            'CROP_IMAGES' : False,
+            'CROP_MIN_X' : 0.29,
+            'CROP_MAX_X' : 0.84,
+            'CROP_MIN_Y' : 0.45,
+            'CROP_MAX_Y' : 0.95,
+            
+            'IMAGES_PER_GRID': 1,
+            'per_grid_image_count_height' : 1, 
+            'per_grid_image_count_width' : 1
         }
         # segmentation_net_module needs to be below dataset because it uses dataset['IMG_CHANNELS']
-        self.segmentation_net_module = {
-                'NUM_KEY_POINTS': 1,
-                'NUM_IMG_CHANNELS': self.dataset['IMG_CHANNELS']
+        self.keypoint_net_module = {
+            'NUM_KEY_POINTS': 128,
+            'NUM_IMG_CHANNELS': self.dataset['IMG_CHANNELS']
         }
 
         self.datamodule = {

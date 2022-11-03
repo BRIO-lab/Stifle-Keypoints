@@ -1,0 +1,152 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.13.3
+    framework: lightning
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.9.7
+    start_time: 1667504086.831058
+    t:
+      1:
+      - 1
+      - 9
+      - 41
+      - 54
+      - 55
+      - 80
+      2:
+      - 1
+      - 9
+      - 41
+      - 54
+      - 55
+      - 80
+      3:
+      - 13
+      - 16
+      - 23
+      4: 3.9.7
+      5: 0.13.3
+      8:
+      - 5
+datamodule/Batch Size:
+  desc: null
+  value: 1
+datamodule/Checkpoint File:
+  desc: null
+  value: None
+datamodule/Image Directory:
+  desc: null
+  value: /media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids
+datamodule/Num Workers:
+  desc: null
+  value: 8
+datamodule/Pin Memory:
+  desc: null
+  value: false
+datamodule/Shuffle:
+  desc: null
+  value: true
+datamodule/Subset Pixels:
+  desc: null
+  value: true
+dataset/Class Labels:
+  desc: null
+  value:
+    '0': bone
+    '1': background
+dataset/Image Channels:
+  desc: null
+  value: 1
+dataset/Image Height:
+  desc: null
+  value: 1024
+dataset/Image Threshold:
+  desc: null
+  value: 0
+dataset/Image Width:
+  desc: null
+  value: 1024
+dataset/Model Type:
+  desc: null
+  value: fem
+dataset/Using Albumentations:
+  desc: null
+  value: true
+etl/Custom Test Set:
+  desc: null
+  value: false
+etl/Data Directory:
+  desc: null
+  value: data
+etl/Keypoint Directory:
+  desc: null
+  value: keypoints
+etl/Random State:
+  desc: null
+  value: 42
+etl/Raw Data File:
+  desc: null
+  value: -1
+etl/Test Set Name:
+  desc: null
+  value: /my/test/set.csv
+etl/Test Size:
+  desc: null
+  value: 0.01
+etl/Validation Size:
+  desc: null
+  value: 0.2
+hparams/Learning_Rate:
+  desc: null
+  value: 0.001
+hparams/Load From Checkpoint:
+  desc: null
+  value: false
+init/Fast Dev Run:
+  desc: null
+  value: true
+init/Max Epochs:
+  desc: null
+  value: 1
+init/Max Steps:
+  desc: null
+  value: -1
+init/Model Name:
+  desc: null
+  value: KeypointTest
+init/Project Name:
+  desc: null
+  value: Keypoint Estimator Development!
+init/Run Name:
+  desc: null
+  value: 2022-11-03-15-34-45
+init/Strategy:
+  desc: null
+  value: None
+init/Wandb Run Group:
+  desc: null
+  value: Local
+'keypoint_net_module/Image Channels #':
+  desc: null
+  value: 1
+'keypoint_net_module/Keypoints #':
+  desc: null
+  value: 1
+transform/Transform:
+  desc: null
+  value: "Compose([\n  RandomGamma(always_apply=False, p=0.5, gamma_limit=(10, 300),\
+    \ eps=None),\n  ShiftScaleRotate(always_apply=False, p=0.5, shift_limit_x=(-0.06,\
+    \ 0.06), shift_limit_y=(-0.06, 0.06), scale_limit=(-0.09999999999999998, 0.10000000000000009),\
+    \ rotate_limit=(-180, 180), interpolation=0, border_mode=0, value=(0, 0, 0), mask_value=None),\n\
+    \  Blur(always_apply=False, p=0.2, blur_limit=(3, 10)),\n  Flip(always_apply=False,\
+    \ p=0.5),\n  ElasticTransform(always_apply=False, p=0.85, alpha=0.5, sigma=150,\
+    \ alpha_affine=50.0, interpolation=0, border_mode=0, value=(0, 0, 0), mask_value=None,\
+    \ approximate=False),\n  InvertImg(always_apply=False, p=0.5),\n  CoarseDropout(always_apply=False,\
+    \ p=0.25, max_holes=100, max_height=25, max_width=8, min_holes=1, min_height=25,\
+    \ min_width=8, fill_value=0, mask_fill_value=None),\n  MultiplicativeNoise(always_apply=False,\
+    \ p=0.25, multiplier=(0.1, 2), per_channel=True, elementwise=True),\n], p=0.85,\
+    \ bbox_params=None, keypoint_params=None, additional_targets={})"

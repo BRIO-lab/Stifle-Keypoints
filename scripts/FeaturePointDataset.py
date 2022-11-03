@@ -24,27 +24,28 @@ class FeaturePointDataset(Dataset):
     """
 
     
-    def __init__(self, config, store_data_ram, evaluation_type, num_points, transform=None):
+    def __init__(self, config, evaluation_type, transform=None):
         """
         Args:
-            data_constants (dictionary): Dictionary of vital constants about data.
-            store_data_ram (boolean): Choose to store data in RAM for faster processing, or save RAM at a cost in performance.
+            config (config): Dictionary of vital constants about data.
+            store_data_ram (boolean): Taken from config.
             evaluation_type (string): Dataset evaluation type (must be 'training', 'validation', or 'test')
-            num_points (int): Number of feature points per image.
+            num_points (int): Taken from config.
             transform (callable, optional): Optional transform to be applied on a sample.
         """
         
-        # Create a local copy of the configuration
+        # Create local copies of the arguments
         self.config = config
-        
-        # Local copy of num_points
-        self.num_points = num_points
+        self.store_data_ram = self.config.dataset['STORE_DATA_RAM']
+        self.evaluation_type = evaluation_type
+        self.num_points = self.config.dataset['NUM_KEY_POINTS']
+        self.transform = self.config.transform
         
         # Check that evaluation_type is valid and then store
-        if evaluation_type in ['training', 'validation', 'test']:
+        if evaluation_type in ['train', 'val', 'test']:
             self.evaluation_type = evaluation_type
         else:
-            raise Exception('Incorrect evaluation type! Must be either \'training\', \'validation\', or \'test\'.')
+            raise Exception('Incorrect evaluation type! Must be either \'train\', \'validation\', or \'test\'.')
         
         # Create full paths to all grids and their Labels
         '''
@@ -54,10 +55,13 @@ class FeaturePointDataset(Dataset):
         '''
 
         print('About to read in csv')        
-        input_data_frame = pd.read_csv(self.config.etl['processed_path'] + '/' + config.data_constants['MODEL_NAME'] + '/train_' + config.data_constants['MODEL_NAME'] + '.csv', header=None, names=['grid', 'keypoints'])
+        #input_data_frame = pd.read_csv(self.config.etl['processed_path'] + '/' + config.data_constants['MODEL_NAME'] + '/train_' + config.datasets['MODEL_NAME'] + '.csv', header=None, names=['grid', 'keypoints'])
+        input_data_frame = pd.read_csv(self.config.etl['DATA_DIR'] + '/' + self.config.init['MODEL_NAME'] + '/' + self.evaluation_type + '_' + config.init['MODEL_NAME'] + '.csv',
+                                        header=None,
+                                        names=['grid', self.config.dataset['MODEL_TYPE'] + '_kps'])
         input_data_frame = input_data_frame.iloc[1:].reset_index(drop=True)  # MIGHT NEED TO REINDEX BECAUSE INDEX STARTS AT 1
 
-        self.grids_fullpaths = input_data_frame['grid'].apply(lambda x: (self.config.data_constants['IMAGE_DIRECTORY'] + x[0:-1]))
+        self.grids_fullpaths = input_data_frame['grid'].apply(lambda x: (self.config.datamodule['IMAGE_DIRECTORY'] + x[0:-1]))
         print('grids_fullpaths created')
         print(self.grids_fullpaths.iloc[0])
 
@@ -65,20 +69,20 @@ class FeaturePointDataset(Dataset):
         self.grid_count = len(self.grids_fullpaths)
 
         self.label_point_data = np.vstack(input_data_frame['keypoints'].apply(lambda x: x.split(',')).apply(lambda x: np.array(x, dtype=float).reshape(-1,2)))  # USED TO WORK BUT DOES NOT NEED TO BE VSTACKED
-        self.label_point_data = np.reshape(self.label_point_data, (input_data_frame.shape[0], num_points, 2))
+        self.label_point_data = np.reshape(self.label_point_data, (input_data_frame.shape[0], self.num_points, 2))
         
-        if self.label_point_data.shape != (len(self.grids_fullpaths),num_points,2):
+        if self.label_point_data.shape != (len(self.grids_fullpaths),self.num_points,2):
                      raise Exception('Error, label data array has shape ' + str(self.label_point_data.shape) + '!')
         # Optional transform
         self.transform = transform
         print('keypoints loaded in')
         # Store image tensors and label tensors to CPU RAM option (should be faster as long as there is room in the RAM)
         # We probably don't have enough RAM on hipergator to use this option. set to false in config to avoid out of memory error.
-        self.store_data_ram = store_data_ram
+        self.store_data_ram = self.store_data_ram
         print('self.store_data_ram')
         self.data_storage = []
         if self.store_data_ram:
-            for idx in range(self.grid_count*self.config.data_constants['images_per_grid']): # Total number of images # THIS IS THE REAL FOR LOOP THAT GETS ALL IMAGES
+            for idx in range(self.grid_count*self.config.datamodule['IMAGES_PER_GRID']): # Total number of images # THIS IS THE REAL FOR LOOP THAT GETS ALL IMAGES
                 self.data_storage.append(self.read_in_data(idx))
                 print("image ", idx, " processed")
                 
@@ -86,40 +90,40 @@ class FeaturePointDataset(Dataset):
         print ("Successfully initialized " + self.evaluation_type + ' dataset!')
 
     def __len__(self):
-        return self.grid_count*self.config.data_constants['images_per_grid'] # Total number of images in data type (n) # FOR REAL USE
+        return self.grid_count*self.config.dataset['IMAGES_PER_GRID'] # Total number of images in data type (n) # FOR REAL USE
     
     def read_in_data(self, idx):
         # Read in image grid
-        grid_idx = idx//self.config.data_constants['images_per_grid']
+        grid_idx = idx//self.config.dataset['IMAGES_PER_GRID']
         grid_image = io.imread(self.grids_fullpaths[grid_idx], as_gray=True)
         
         # Extract image from grid using top-left to bottom-right ordering
-        idx_in_grid = idx%self.config.data_constants['images_per_grid']
-        img_top_row_idx = (idx_in_grid//self.config.data_constants['per_grid_image_count_width'])*self.config.data_constants['IMAGE_HEIGHT']
-        img_left_col_idx = (idx_in_grid%self.config.data_constants['per_grid_image_count_width'])*self.config.data_constants['IMAGE_WIDTH']
-        image = grid_image[img_top_row_idx:img_top_row_idx + self.config.data_constants['IMAGE_HEIGHT'],\
-                          img_left_col_idx:img_left_col_idx + self.config.data_constants['IMAGE_WIDTH']]
+        idx_in_grid = idx%self.config.dataset['IMAGES_PER_GRID']
+        img_top_row_idx = (idx_in_grid//self.config.dataset['per_grid_image_count_width'])*self.config.dataset['IMAGE_HEIGHT']
+        img_left_col_idx = (idx_in_grid%self.config.dataset['per_grid_image_count_width'])*self.config.dataset['IMAGE_WIDTH']
+        image = grid_image[img_top_row_idx:img_top_row_idx + self.config.dataset['IMAGE_HEIGHT'],\
+                          img_left_col_idx:img_left_col_idx + self.config.dataset['IMAGE_WIDTH']]
         
         # Label should always be in [0,1] format when read in and then transformed into Gaussian heatmap       
         # In PyTorch, images are represented as [channels, height, width] so must add 1 channel dimension
-        if self.config.data_constants['CROP_IMAGES']:
-            LEFT_X_PIX = math.floor(self.config.data_constants['CROP_MIN_X']*self.config.data_constants['IMAGE_WIDTH'])
-            RIGHT_X_PIX = math.ceil(self.config.data_constants['CROP_MAX_X']*self.config.data_constants['IMAGE_WIDTH'])
+        if self.config.dataset['CROP_IMAGES']:
+            LEFT_X_PIX = math.floor(self.config.dataset['CROP_MIN_X']*self.config.dataset['IMAGE_WIDTH'])
+            RIGHT_X_PIX = math.ceil(self.config.dataset['CROP_MAX_X']*self.config.dataset['IMAGE_WIDTH'])
             LEFT_X_PIX -= (32 - ((RIGHT_X_PIX - LEFT_X_PIX) % 32)) # So Width is Divisible by 32
-            BOT_Y_PIX = math.floor(self.config.data_constants['CROP_MIN_Y']*self.config.data_constants['IMAGE_HEIGHT'])
-            TOP_Y_PIX = math.ceil(self.config.data_constants['CROP_MAX_Y']*self.config.data_constants['IMAGE_HEIGHT'])
+            BOT_Y_PIX = math.floor(self.config.dataset['CROP_MIN_Y']*self.config.dataset['IMAGE_HEIGHT'])
+            TOP_Y_PIX = math.ceil(self.config.dataset['CROP_MAX_Y']*self.config.dataset['IMAGE_HEIGHT'])
             BOT_Y_PIX -= (32 - ((TOP_Y_PIX - BOT_Y_PIX) % 32)) # So Height is Divisible by 32
-            image = torch.ByteTensor(image[None, (self.config.data_constants['IMAGE_HEIGHT'] - TOP_Y_PIX):(self.config.data_constants['IMAGE_HEIGHT']-BOT_Y_PIX), LEFT_X_PIX:RIGHT_X_PIX]) # Store as byte (to save space) then convert
+            image = torch.ByteTensor(image[None, (self.config.dataset['IMAGE_HEIGHT'] - TOP_Y_PIX):(self.config.dataset['IMAGE_HEIGHT']-BOT_Y_PIX), LEFT_X_PIX:RIGHT_X_PIX]) # Store as byte (to save space) then convert
             cropped_point_list = [] # Need to Rescale Points
             for orig_point in self.label_point_data[idx]:
-                cropped_point_list.append([(orig_point[0]*self.config.data_constants['IMAGE_WIDTH'] - LEFT_X_PIX)/(RIGHT_X_PIX-LEFT_X_PIX),\
-                                           (orig_point[1]*self.config.data_constants['IMAGE_WIDTH'] - BOT_Y_PIX)/(TOP_Y_PIX-BOT_Y_PIX)])
+                cropped_point_list.append([(orig_point[0]*self.config.dataset['IMAGE_WIDTH'] - LEFT_X_PIX)/(RIGHT_X_PIX-LEFT_X_PIX),\
+                                           (orig_point[1]*self.config.dataset['IMAGE_WIDTH'] - BOT_Y_PIX)/(TOP_Y_PIX-BOT_Y_PIX)])
             label = torch.FloatTensor(create_gaussian_heatmap(self.config, cropped_point_list, TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX))
             #image = torch.zeros([1,TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX],dtype=torch.uint8)
             #label = torch.zeros([NUM_POINTS,TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX], dtype=torch.float)
         else:
             image = torch.ByteTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
-            label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.data_constants['IMAGE_HEIGHT'], self.config.data_constants['IMAGE_WIDTH']))
+            label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']))
         
         # Form sample and transform if necessary
         sample = {'image': image, 'label': label}
@@ -129,38 +133,38 @@ class FeaturePointDataset(Dataset):
 
     def __getitem__(self, idx):
         if self.store_data_ram:
-            return {'image': self.data_storage[idx]['image'].type(self.config.data_constants['IMAGES_GPU_DATA_TYPE']), 'label':\
+            return {'image': self.data_storage[idx]['image'].type(self.config.dataset['IMAGES_GPU_DATA_TYPE']), 'label':\
                    self.data_storage[idx]['label']}
         else:
             # Read in image grid
-            grid_idx = idx//self.config.data_constants['images_per_grid']
+            grid_idx = idx//self.config.dataset['images_per_grid']
             grid_image = io.imread(self.grids_fullpaths[grid_idx], as_gray=True)
 
             # Extract image from grid using top-left to bottom-right ordering
-            idx_in_grid = idx%self.config.data_constants['images_per_grid']
-            img_top_row_idx = (idx_in_grid//self.config.data_constants['per_grid_image_count_width'])*self.config.data_constants['IMAGE_HEIGHT']
-            img_left_col_idx = (idx_in_grid%self.config.data_constants['per_grid_image_count_width'])*self.config.data_constants['IMAGE_WIDTH']
-            image = grid_image[img_top_row_idx:img_top_row_idx + self.config.data_constants['IMAGE_HEIGHT'],\
-                              img_left_col_idx:img_left_col_idx + self.config.data_constants['IMAGE_WIDTH']]
+            idx_in_grid = idx%self.config.dataset['images_per_grid']
+            img_top_row_idx = (idx_in_grid//self.config.dataset['per_grid_image_count_width'])*self.config.dataset['IMAGE_HEIGHT']
+            img_left_col_idx = (idx_in_grid%self.config.dataset['per_grid_image_count_width'])*self.config.dataset['IMAGE_WIDTH']
+            image = grid_image[img_top_row_idx:img_top_row_idx + self.config.dataset['IMAGE_HEIGHT'],\
+                              img_left_col_idx:img_left_col_idx + self.config.dataset['IMAGE_WIDTH']]
             
             # Label should always be in [0,1] format when read in and then transformed into Gaussian heatmap       
             # In PyTorch, images are represented as [channels, height, width] so must add 1 channel dimension
-            if self.config.data_constants['CROP_IMAGES']:
-                LEFT_X_PIX = math.floor(self.config.data_constants['CROP_MIN_X']*self.config.data_constants['IMAGE_WIDTH'])
-                RIGHT_X_PIX = math.ceil(self.config.data_constants['CROP_MAX_X']*self.config.data_constants['IMAGE_WIDTH'])
+            if self.config.dataset['CROP_IMAGES']:
+                LEFT_X_PIX = math.floor(self.config.dataset['CROP_MIN_X']*self.config.dataset['IMAGE_WIDTH'])
+                RIGHT_X_PIX = math.ceil(self.config.dataset['CROP_MAX_X']*self.config.dataset['IMAGE_WIDTH'])
                 LEFT_X_PIX -= (32 - ((RIGHT_X_PIX - LEFT_X_PIX) % 32)) # So Width is Divisible by 32
-                BOT_Y_PIX = math.floor(self.config.data_constants['CROP_MIN_Y']*self.config.data_constants['IMAGE_HEIGHT'])
-                TOP_Y_PIX = math.ceil(self.config.data_constants['CROP_MAX_Y']*self.config.data_constants['IMAGE_HEIGHT'])
+                BOT_Y_PIX = math.floor(self.config.dataset['CROP_MIN_Y']*self.config.dataset['IMAGE_HEIGHT'])
+                TOP_Y_PIX = math.ceil(self.config.dataset['CROP_MAX_Y']*self.config.dataset['IMAGE_HEIGHT'])
                 BOT_Y_PIX -= (32 - ((TOP_Y_PIX - BOT_Y_PIX) % 32)) # So Height is Divisible by 32
-                image = torch.ByteTensor(image[None, (self.config.data_constants['IMAGE_HEIGHT'] - TOP_Y_PIX):(self.config.data_constants['IMAGE_HEIGHT']-BOT_Y_PIX), LEFT_X_PIX:RIGHT_X_PIX]) # Store as byte (to save space) then convert
+                image = torch.ByteTensor(image[None, (self.config.dataset['IMAGE_HEIGHT'] - TOP_Y_PIX):(self.config.dataset['IMAGE_HEIGHT']-BOT_Y_PIX), LEFT_X_PIX:RIGHT_X_PIX]) # Store as byte (to save space) then convert
                 cropped_point_list = [] # Need to Rescale Points
                 for orig_point in self.label_point_data[idx]:
-                    cropped_point_list.append([(orig_point[0]*self.config.data_constants['IMAGE_WIDTH'] - LEFT_X_PIX)/(RIGHT_X_PIX-LEFT_X_PIX),\
-                                               (orig_point[1]*self.config.data_constants['IMAGE_HEIGHT'] - BOT_Y_PIX)/(TOP_Y_PIX-BOT_Y_PIX)])
+                    cropped_point_list.append([(orig_point[0]*self.config.dataset['IMAGE_WIDTH'] - LEFT_X_PIX)/(RIGHT_X_PIX-LEFT_X_PIX),\
+                                               (orig_point[1]*self.config.dataset['IMAGE_HEIGHT'] - BOT_Y_PIX)/(TOP_Y_PIX-BOT_Y_PIX)])
                 label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.cocropped_point_list, TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX))
             else:
                 image = torch.FloatTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
-                label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.data_constants['IMAGE_HEIGHT'], self.config.data_constants['IMAGE_WIDTH']))
+                label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']))
         
             # Form sample and transform if necessary
             sample = {'image': image, 'label': label}

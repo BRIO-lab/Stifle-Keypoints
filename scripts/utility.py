@@ -30,6 +30,7 @@ def create_config_dict(config) -> dict:
                     'init/Strategy': str(config.init['STRATEGY']),
                     'etl/Raw Data File': config.etl['RAW_DATA_FILE'],
                     'etl/Data Directory': config.etl['DATA_DIR'],
+                    'etl/Keypoint Directory': config.etl['KEYPOINT_DIRECTORY'],
                     'etl/Validation Size': config.etl['VAL_SIZE'],
                     'etl/Test Size': config.etl['TEST_SIZE'],
                     'etl/Random State': config.etl['RANDOM_STATE'],
@@ -53,6 +54,8 @@ def create_config_dict(config) -> dict:
                     #'module/Num Image Channels': config.module['NUM_IMAGE_CHANNELS'],
                     'hparams/Load From Checkpoint': config.hparams['LOAD_FROM_CHECKPOINT'],
                     'hparams/Learning_Rate': config.hparams['learning_rate'],
+                    'keypoint_net_module/Keypoints #': config.keypoint_net_module['NUM_KEY_POINTS'],
+                    'keypoint_net_module/Image Channels #': config.keypoint_net_module['NUM_IMG_CHANNELS'],
                     'transform/Transform': config.transform}
     
     return config_dict

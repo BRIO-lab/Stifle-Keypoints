@@ -1,0 +1,35 @@
+2022-11-03 16:00:23,514 INFO    MainThread:24896 [wandb_setup.py:_flush():68] Configure stats pid to 24896
+2022-11-03 16:00:23,514 INFO    MainThread:24896 [wandb_setup.py:_flush():68] Loading settings from /home/sasank/.config/wandb/settings
+2022-11-03 16:00:23,514 INFO    MainThread:24896 [wandb_setup.py:_flush():68] Loading settings from /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/settings
+2022-11-03 16:00:23,514 INFO    MainThread:24896 [wandb_setup.py:_flush():68] Loading settings from environment variables: {'_require_service': 'True', 'run_group': 'Local'}
+2022-11-03 16:00:23,514 INFO    MainThread:24896 [wandb_setup.py:_flush():68] Inferring run settings from compute environment: {'program_relpath': 'scripts/fit.py', 'program': '/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/fit.py'}
+2022-11-03 16:00:23,514 INFO    MainThread:24896 [wandb_init.py:_log_setup():476] Logging user logs to /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_160023-2plhd056/logs/debug.log
+2022-11-03 16:00:23,514 INFO    MainThread:24896 [wandb_init.py:_log_setup():477] Logging internal logs to /home/sasank/Documents/GitRepos/Stifle-Keypoints/wandb/run-20221103_160023-2plhd056/logs/debug-internal.log
+2022-11-03 16:00:23,514 INFO    MainThread:24896 [wandb_init.py:init():516] calling init triggers
+2022-11-03 16:00:23,515 INFO    MainThread:24896 [wandb_init.py:init():519] wandb.init called with sweep_config: {}
+config: {'init/Project Name': 'Keypoint Estimator Development!', 'init/Model Name': 'KeypointTest', 'init/Run Name': '2022-11-03-16-00-22', 'init/Wandb Run Group': 'Local', 'init/Fast Dev Run': True, 'init/Max Epochs': 1, 'init/Max Steps': -1, 'init/Strategy': 'None', 'etl/Raw Data File': -1, 'etl/Data Directory': 'data', 'etl/Keypoint Directory': 'keypoints', 'etl/Validation Size': 0.2, 'etl/Test Size': 0.01, 'etl/Random State': 42, 'etl/Custom Test Set': False, 'etl/Test Set Name': '/my/test/set.csv', 'dataset/Image Height': 1024, 'dataset/Image Width': 1024, 'dataset/Model Type': 'fem', 'dataset/Class Labels': {0: 'bone', 1: 'background'}, 'dataset/Image Channels': 1, 'dataset/Image Threshold': 0, 'dataset/Using Albumentations': True, 'datamodule/Image Directory': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids', 'datamodule/Checkpoint File': 'None', 'datamodule/Batch Size': 1, 'datamodule/Shuffle': True, 'datamodule/Num Workers': 8, 'datamodule/Pin Memory': False, 'datamodule/Subset Pixels': True, 'hparams/Load From Checkpoint': False, 'hparams/Learning_Rate': 0.001, 'keypoint_net_module/Keypoints #': 128, 'keypoint_net_module/Image Channels #': 1, 'transform/Transform': Compose([
+  RandomGamma(always_apply=False, p=0.5, gamma_limit=(10, 300), eps=None),
+  ShiftScaleRotate(always_apply=False, p=0.5, shift_limit_x=(-0.06, 0.06), shift_limit_y=(-0.06, 0.06), scale_limit=(-0.09999999999999998, 0.10000000000000009), rotate_limit=(-180, 180), interpolation=0, border_mode=0, value=(0, 0, 0), mask_value=None),
+  Blur(always_apply=False, p=0.2, blur_limit=(3, 10)),
+  Flip(always_apply=False, p=0.5),
+  ElasticTransform(always_apply=False, p=0.85, alpha=0.5, sigma=150, alpha_affine=50.0, interpolation=0, border_mode=0, value=(0, 0, 0), mask_value=None, approximate=False),
+  InvertImg(always_apply=False, p=0.5),
+  CoarseDropout(always_apply=False, p=0.25, max_holes=100, max_height=25, max_width=8, min_holes=1, min_height=25, min_width=8, fill_value=0, mask_fill_value=None),
+  MultiplicativeNoise(always_apply=False, p=0.25, multiplier=(0.1, 2), per_channel=True, elementwise=True),
+], p=0.85, bbox_params=None, keypoint_params=None, additional_targets={})}
+2022-11-03 16:00:23,515 INFO    MainThread:24896 [wandb_init.py:init():569] starting backend
+2022-11-03 16:00:23,515 INFO    MainThread:24896 [wandb_init.py:init():573] setting up manager
+2022-11-03 16:00:23,517 INFO    MainThread:24896 [backend.py:_multiprocessing_setup():102] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2022-11-03 16:00:23,518 INFO    MainThread:24896 [wandb_init.py:init():580] backend started and connected
+2022-11-03 16:00:23,525 INFO    MainThread:24896 [wandb_init.py:init():658] updated telemetry
+2022-11-03 16:00:23,538 INFO    MainThread:24896 [wandb_init.py:init():692] communicating run to backend with 30 second timeout
+2022-11-03 16:00:23,830 INFO    MainThread:24896 [wandb_run.py:_on_init():1974] communicating current version
+2022-11-03 16:00:23,895 INFO    MainThread:24896 [wandb_run.py:_on_init():1978] got version response upgrade_message: "wandb version 0.13.4 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2022-11-03 16:00:23,895 INFO    MainThread:24896 [wandb_init.py:init():727] starting run threads in backend
+2022-11-03 16:00:26,978 INFO    MainThread:24896 [wandb_run.py:_console_start():1954] atexit reg
+2022-11-03 16:00:26,979 INFO    MainThread:24896 [wandb_run.py:_redirect():1812] redirect: SettingsConsole.WRAP_RAW
+2022-11-03 16:00:26,979 INFO    MainThread:24896 [wandb_run.py:_redirect():1877] Wrapping output streams.
+2022-11-03 16:00:26,979 INFO    MainThread:24896 [wandb_run.py:_redirect():1899] Redirects installed.
+2022-11-03 16:00:26,979 INFO    MainThread:24896 [wandb_init.py:init():764] run started, returning control to user process
+2022-11-03 16:00:35,272 WARNING MsgRouterThr:24896 [router.py:message_loop():77] message_loop has been closed
