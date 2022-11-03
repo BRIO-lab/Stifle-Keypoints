@@ -1,0 +1,164 @@
+Date      = Mon Apr 11 19:51:17 EDT 2022
+host      = c0907a-s11
+Directory = /blue/banks/nicholasverdugo/Shoulder-Keypoint
+etl.py complete! running train.py...
+--- Logging error ---
+Traceback (most recent call last):
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 1083, in emit
+    msg = self.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 927, in format
+    return fmt.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 663, in format
+    record.message = record.getMessage()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 367, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 213, in <module>
+    train()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1137, in __call__
+    return self.main(*args, **kwargs)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1062, in main
+    rv = self.invoke(ctx)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1404, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 763, in invoke
+    return __callback(*args, **kwargs)
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 148, in train
+    logger.info('BEGIN EPOCH', epoch_idx)
+Message: 'BEGIN EPOCH'
+Arguments: (0,)
+/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/torch/nn/functional.py:3487: UserWarning: nn.functional.upsample is deprecated. Use nn.functional.interpolate instead.
+  warnings.warn("nn.functional.upsample is deprecated. Use nn.functional.interpolate instead.")
+/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/torch/nn/functional.py:3609: UserWarning: Default upsampling behavior when mode=bilinear is changed to align_corners=False since 0.4.0. Please specify align_corners=True if the old behavior is desired. See the documentation of nn.Upsample for details.
+  warnings.warn(
+--- Logging error ---
+Traceback (most recent call last):
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 1083, in emit
+    msg = self.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 927, in format
+    return fmt.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 663, in format
+    record.message = record.getMessage()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 367, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 213, in <module>
+    train()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1137, in __call__
+    return self.main(*args, **kwargs)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1062, in main
+    rv = self.invoke(ctx)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1404, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 763, in invoke
+    return __callback(*args, **kwargs)
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 148, in train
+    logger.info('BEGIN EPOCH', epoch_idx)
+Message: 'BEGIN EPOCH'
+Arguments: (1,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 1083, in emit
+    msg = self.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 927, in format
+    return fmt.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 663, in format
+    record.message = record.getMessage()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 367, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 213, in <module>
+    train()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1137, in __call__
+    return self.main(*args, **kwargs)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1062, in main
+    rv = self.invoke(ctx)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1404, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 763, in invoke
+    return __callback(*args, **kwargs)
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 148, in train
+    logger.info('BEGIN EPOCH', epoch_idx)
+Message: 'BEGIN EPOCH'
+Arguments: (2,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 1083, in emit
+    msg = self.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 927, in format
+    return fmt.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 663, in format
+    record.message = record.getMessage()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 367, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 213, in <module>
+    train()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1137, in __call__
+    return self.main(*args, **kwargs)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1062, in main
+    rv = self.invoke(ctx)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1404, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 763, in invoke
+    return __callback(*args, **kwargs)
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 148, in train
+    logger.info('BEGIN EPOCH', epoch_idx)
+Message: 'BEGIN EPOCH'
+Arguments: (3,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 1083, in emit
+    msg = self.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 927, in format
+    return fmt.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 663, in format
+    record.message = record.getMessage()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 367, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 213, in <module>
+    train()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1137, in __call__
+    return self.main(*args, **kwargs)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1062, in main
+    rv = self.invoke(ctx)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1404, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 763, in invoke
+    return __callback(*args, **kwargs)
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 148, in train
+    logger.info('BEGIN EPOCH', epoch_idx)
+Message: 'BEGIN EPOCH'
+Arguments: (4,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 1083, in emit
+    msg = self.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 927, in format
+    return fmt.format(record)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 663, in format
+    record.message = record.getMessage()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/logging/__init__.py", line 367, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 213, in <module>
+    train()
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1137, in __call__
+    return self.main(*args, **kwargs)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1062, in main
+    rv = self.invoke(ctx)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 1404, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/blue/banks/ajensen123/JTML/envs/jtml-env/lib/python3.9/site-packages/click/core.py", line 763, in invoke
+    return __callback(*args, **kwargs)
+  File "/blue/banks/nicholasverdugo/Shoulder-Keypoint/scripts/__train.py", line 148, in train
+    logger.info('BEGIN EPOCH', epoch_idx)
+Message: 'BEGIN EPOCH'
+Arguments: (5,)

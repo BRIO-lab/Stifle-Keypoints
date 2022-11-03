@@ -1,0 +1,5 @@
+Date      = Fri Apr  8 15:17:52 EDT 2022
+host      = c0901a-s23
+Directory = /blue/banks/JTML/Shoulder-Keypoint
+/tmp/slurmd/job25045793/slurm_script: line 25: 257181 Killed                  python scripts/__train.py hum_config
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=25045793.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
