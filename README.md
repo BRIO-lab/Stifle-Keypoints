@@ -1,2 +1,4 @@
 # Stifle-Keypoints
-Keypoint-based pose estimation for canine stifles
+This repo is for keypoint-based pose estimation for canine stifles.
+
+This is takes heavily from the BRIO-lab/Shoulder-Keypoint repo.
