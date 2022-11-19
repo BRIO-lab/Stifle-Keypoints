@@ -54,7 +54,7 @@ class Configuration:
 
             'NUM_POINTS' : 128,
 
-            'GAUSSIAN_STDEV_HEATMAP' : 5,
+            'GAUSSIAN_STDDEV' : 5,
             'GAUSSIAN_AMP' : 1e6,
 
             'STORE_DATA_RAM' : False,
