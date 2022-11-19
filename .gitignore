@@ -1,0 +1,4 @@
+#What files for git to ignore
+
+*.ckpt
+checkpoints/*
