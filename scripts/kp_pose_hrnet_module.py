@@ -12,6 +12,7 @@ import time
 import nvtx
 
 from pose_hrnet_modded_in_notebook import PoseHighResolutionNet
+from loss import kp_loss
 
 class KeypointNetModule(pl.LightningModule):
     def __init__(self, config, wandb_run, learning_rate=1e-3):
@@ -28,7 +29,11 @@ class KeypointNetModule(pl.LightningModule):
         print("Pose HRNet is on device " + str(next(self.pose_hrnet.parameters()).get_device()))     # testing line
         print("Is Pose HRNet on GPU? " + str(next(self.pose_hrnet.parameters()).is_cuda))            # testing line
         self.wandb_run = wandb_run
-        self.loss_fn = torch.nn.MSELoss()
+        #self.loss_fn = torch.nn.MSELoss()
+        self.loss_fn = kp_loss(
+            gaussian_amp=self.config.dataset['GAUSSIAN_AMP'],
+            gaussian_sigma=self.config.dataset['GAUSSIAN_STDDEV']
+            )
         #print(self.pose_hrnet.get_device())
 
     def forward(self, x):

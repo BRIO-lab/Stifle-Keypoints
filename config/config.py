@@ -92,6 +92,8 @@ class Configuration:
             'learning_rate': 1e-3
         }
 
+        self.transform = None
+        """
         self.transform = \
         A.Compose([
         A.RandomGamma(always_apply=False, p = 0.5,gamma_limit=(10,300)),
@@ -102,4 +104,6 @@ class Configuration:
         A.InvertImg(always_apply=False, p=0.5),
         A.CoarseDropout(always_apply = False, p = 0.25, min_holes = 1, max_holes = 100, min_height = 25, max_height=25),
         A.MultiplicativeNoise(always_apply=False, p=0.25, multiplier=(0.1, 2), per_channel=True, elementwise=True)
-    ], p=0.85)
+        ],
+        p=0.85)
+        """

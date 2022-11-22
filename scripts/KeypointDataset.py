@@ -81,7 +81,7 @@ class KeypointDataset(Dataset):
         # Calculate grid count
         self.grid_count = len(self.grids_fullpaths)
 
-        self.label_point_data = np.vstack(input_data_frame['keypoints'].apply(lambda x: x.split(',')).apply(lambda x: np.array(x, dtype=float).reshape(-1,2)))  # USED TO WORK BUT DOES NOT NEED TO BE VSTACKED
+        self.label_point_data = np.vstack(input_data_frame[self.config.dataset['MODEL_TYPE'] + '_kps'].apply(lambda x: x.split(',')).apply(lambda x: np.array(x, dtype=float).reshape(-1,2)))  # USED TO WORK BUT DOES NOT NEED TO BE VSTACKED
         self.label_point_data = np.reshape(self.label_point_data, (input_data_frame.shape[0], self.num_points, 2))
         
         if self.label_point_data.shape != (len(self.grids_fullpaths),self.num_points,2):
@@ -103,8 +103,10 @@ class KeypointDataset(Dataset):
         print ("Successfully initialized " + self.evaluation_type + ' dataset!')
 
     def __len__(self):
+        # Bro why would we have more than one image per grid? Like bruh
         return self.grid_count*self.config.dataset['IMAGES_PER_GRID'] # Total number of images in data type (n) # FOR REAL USE
     
+    # This function is only called when we are storing data in RAM (self.store_data_ram = True)
     def read_in_data(self, idx):
         # Read in image grid
         grid_idx = idx//self.config.dataset['IMAGES_PER_GRID']
@@ -131,12 +133,13 @@ class KeypointDataset(Dataset):
             for orig_point in self.label_point_data[idx]:
                 cropped_point_list.append([(orig_point[0]*self.config.dataset['IMAGE_WIDTH'] - LEFT_X_PIX)/(RIGHT_X_PIX-LEFT_X_PIX),\
                                            (orig_point[1]*self.config.dataset['IMAGE_WIDTH'] - BOT_Y_PIX)/(TOP_Y_PIX-BOT_Y_PIX)])
-            label = torch.FloatTensor(create_gaussian_heatmap(self.config, cropped_point_list, TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX))
+            #label = torch.FloatTensor(create_gaussian_heatmap(self.config, cropped_point_list, TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX))
             #image = torch.zeros([1,TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX],dtype=torch.uint8)
             #label = torch.zeros([NUM_POINTS,TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX], dtype=torch.float)
         else:
             image = torch.ByteTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
-            label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']))
+            #label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']))
+            label = self.label_point_data[idx]      # trying this out
         
         # Form sample and transform if necessary
         sample = {'image': image, 'label': label}
@@ -174,10 +177,11 @@ class KeypointDataset(Dataset):
                 for orig_point in self.label_point_data[idx]:
                     cropped_point_list.append([(orig_point[0]*self.config.dataset['IMAGE_WIDTH'] - LEFT_X_PIX)/(RIGHT_X_PIX-LEFT_X_PIX),\
                                                (orig_point[1]*self.config.dataset['IMAGE_HEIGHT'] - BOT_Y_PIX)/(TOP_Y_PIX-BOT_Y_PIX)])
-                label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.cocropped_point_list, TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX))
+                #label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.cocropped_point_list, TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX))
             else:
                 image = torch.FloatTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
-                label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']))
+                #label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']))
+                label = self.label_point_data[idx]      # trying this out
         
             # Form sample and transform if necessary
             sample = {'image': image, 'label': label}
