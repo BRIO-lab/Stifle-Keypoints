@@ -153,11 +153,11 @@ class KeypointDataset(Dataset):
                    self.data_storage[idx]['label']}
         else:
             # Read in image grid
-            grid_idx = idx//self.config.dataset['images_per_grid']
+            grid_idx = idx//self.config.dataset['IMAGES_PER_GRID']
             grid_image = io.imread(self.grids_fullpaths[grid_idx], as_gray=True)
 
             # Extract image from grid using top-left to bottom-right ordering
-            idx_in_grid = idx%self.config.dataset['images_per_grid']
+            idx_in_grid = idx%self.config.dataset['IMAGES_PER_GRID']
             img_top_row_idx = (idx_in_grid//self.config.dataset['per_grid_image_count_width'])*self.config.dataset['IMAGE_HEIGHT']
             img_left_col_idx = (idx_in_grid%self.config.dataset['per_grid_image_count_width'])*self.config.dataset['IMAGE_WIDTH']
             image = grid_image[img_top_row_idx:img_top_row_idx + self.config.dataset['IMAGE_HEIGHT'],\

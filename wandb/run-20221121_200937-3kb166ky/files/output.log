@@ -1,0 +1,107 @@
+Pose HRNet is on device -1
+Is Pose HRNet on GPU? False
+Auto select gpus: [0]
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/configuration_validator.py:247: LightningDeprecationWarning: The `on_init_start` callback hook was deprecated in v1.6 and will be removed in v1.8.
+  rank_zero_deprecation(
+/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/configuration_validator.py:251: LightningDeprecationWarning: The `on_init_end` callback hook was deprecated in v1.6 and will be removed in v1.8.
+  rank_zero_deprecation("The `on_init_end` callback hook was deprecated in v1.6 and will be removed in v1.8.")
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+  | Name       | Type                  | Params
+-----------------------------------------------------
+0 | pose_hrnet | PoseHighResolutionNet | 9.3 M
+1 | loss_fn    | kp_loss               | 0
+-----------------------------------------------------
+9.3 M     Trainable params
+0         Non-trainable params
+9.3 M     Total params
+37.217    Total estimated model params size (MB)
+/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py:1892: PossibleUserWarning: The number of training batches (1) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+  rank_zero_warn(
+Traceback (most recent call last):
+  File "/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/fit.py", line 104, in <module>
+    main(config, wandb_run)
+  File "/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/fit.py", line 64, in main
+    trainer.fit(model, data_module)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 696, in fit
+    self._call_and_handle_interrupt(
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 650, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 735, in _fit_impl
+    results = self._run(model, ckpt_path=self.ckpt_path)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 1166, in _run
+    results = self._run_stage()
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 1252, in _run_stage
+    return self._run_train()
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 1283, in _run_train
+    self.fit_loop.run()
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/loops/loop.py", line 200, in run
+    self.advance(*args, **kwargs)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/loops/fit_loop.py", line 271, in advance
+    self._outputs = self.epoch_loop.run(self._data_fetcher)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/loops/loop.py", line 200, in run
+    self.advance(*args, **kwargs)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/loops/epoch/training_epoch_loop.py", line 174, in advance
+    batch = next(data_fetcher)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/utilities/fetching.py", line 184, in __next__
+    return self.fetching_function()
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/utilities/fetching.py", line 263, in fetching_function
+    self._fetch_next_batch(self.dataloader_iter)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/utilities/fetching.py", line 277, in _fetch_next_batch
+    batch = next(iterator)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/supporters.py", line 557, in __next__
+    return self.request_next_batch(self.loader_iters)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/supporters.py", line 569, in request_next_batch
+    return apply_to_collection(loader_iters, Iterator, next)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/utilities/apply_func.py", line 99, in apply_to_collection
+    return function(data, *args, **kwargs)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1203, in _next_data
+    return self._process_data(data)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1229, in _process_data
+    data.reraise()
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/torch/_utils.py", line 425, in reraise
+    raise self.exc_type(msg)
+KeyError: Caught KeyError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/torch/utils/data/_utils/worker.py", line 287, in _worker_loop
+    data = fetcher.fetch(index)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/torch/utils/data/_utils/fetch.py", line 44, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/torch/utils/data/_utils/fetch.py", line 44, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/KeypointDataset.py", line 156, in __getitem__
+    grid_idx = idx//self.config.dataset['images_per_grid']
+KeyError: 'images_per_grid'
+Pose HRNet is on device 0
+Is Pose HRNet on GPU? True
+********************  Starting Initialization!  ********************
+********************  Finished Initialization!  ********************
+About to read in csv
+grids_fullpaths created
+/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_gridsgrid_Calib file test_000000001109.tif
+keypoints loaded in
+self.store_data_ram
+Successfully initialized train dataset!
+About to read in csv
+grids_fullpaths created
+/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_gridsgrid_Calib file test_000000001876.tif
+keypoints loaded in
+self.store_data_ram
+Successfully initialized val dataset!
+About to read in csv
+grids_fullpaths created
+/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_gridsgrid_Calib file test_000000002040.tif
+keypoints loaded in
+self.store_data_ram
+Successfully initialized test dataset!
+********************  Starting Fitting!  ********************
+********************  Starting Training!  ********************
+Training: 0it [00:00, ?it/s]
+********************Starting train epoch 0!********************
+Epoch 0:   0%|                                                                                                                                            | 0/2 [00:00<?, ?it/s]

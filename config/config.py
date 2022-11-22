@@ -76,7 +76,7 @@ class Configuration:
         }
 
         self.datamodule = {
-            'IMAGE_DIRECTORY': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids',
+            'IMAGE_DIRECTORY': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids/',
             'CKPT_FILE': None,
             'BATCH_SIZE': 1,
             'SHUFFLE': True,        # Only for training, for test and val this is set in the datamodule script to False

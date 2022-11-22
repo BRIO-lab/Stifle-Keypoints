@@ -10,7 +10,8 @@ import os
 from skimage import io
 import cv2
 
-from FeaturePointDataset import FeaturePointDataset
+#from FeaturePointDataset import FeaturePointDataset
+from KeypointDataset import KeypointDataset
 
 
 class KeypointDataModule(pl.LightningDataModule):
@@ -62,11 +63,11 @@ class KeypointDataModule(pl.LightningDataModule):
 
     def setup(self, stage):
 
-        self.training_set = FeaturePointDataset(config=self.config,
+        self.training_set = KeypointDataset(config=self.config,
                                             evaluation_type='train')
-        self.validation_set = FeaturePointDataset(config=self.config,
+        self.validation_set = KeypointDataset(config=self.config,
                                             evaluation_type='val')
-        self.test_set = FeaturePointDataset(config=self.config,
+        self.test_set = KeypointDataset(config=self.config,
                                             evaluation_type='test')
 
         return

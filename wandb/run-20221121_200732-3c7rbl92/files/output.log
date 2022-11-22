@@ -1,0 +1,54 @@
+Pose HRNet is on device -1
+Is Pose HRNet on GPU? False
+Pose HRNet is on device 0
+Is Pose HRNet on GPU? True
+********************  Starting Initialization!  ********************
+********************  Finished Initialization!  ********************
+About to read in csv
+grids_fullpaths created
+/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_gridsgrid_Calib file test_000000001109.tif
+Auto select gpus: [0]
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/configuration_validator.py:247: LightningDeprecationWarning: The `on_init_start` callback hook was deprecated in v1.6 and will be removed in v1.8.
+  rank_zero_deprecation(
+/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/configuration_validator.py:251: LightningDeprecationWarning: The `on_init_end` callback hook was deprecated in v1.6 and will be removed in v1.8.
+  rank_zero_deprecation("The `on_init_end` callback hook was deprecated in v1.6 and will be removed in v1.8.")
+Traceback (most recent call last):
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 3621, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 136, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 163, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5198, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5206, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'keypoints'
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/fit.py", line 104, in <module>
+    main(config, wandb_run)
+  File "/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/fit.py", line 64, in main
+    trainer.fit(model, data_module)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 696, in fit
+    self._call_and_handle_interrupt(
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 650, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 735, in _fit_impl
+    results = self._run(model, ckpt_path=self.ckpt_path)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 1105, in _run
+    self._call_setup_hook()  # allow user to setup lightning_module in accelerator environment
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 1447, in _call_setup_hook
+    self._call_lightning_datamodule_hook("setup", stage=fn)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 1569, in _call_lightning_datamodule_hook
+    return fn(*args, **kwargs)
+  File "/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/datamodule.py", line 65, in setup
+    self.training_set = FeaturePointDataset(config=self.config,
+  File "/home/sasank/Documents/GitRepos/Stifle-Keypoints/scripts/FeaturePointDataset.py", line 71, in __init__
+    self.label_point_data = np.vstack(input_data_frame['keypoints'].apply(lambda x: x.split(',')).apply(lambda x: np.array(x, dtype=float).reshape(-1,2)))  # USED TO WORK BUT DOES NOT NEED TO BE VSTACKED
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pandas/core/frame.py", line 3505, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/sasank/miniconda3/envs/jtml/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 3623, in get_loc
+    raise KeyError(key) from err
+KeyError: 'keypoints'
