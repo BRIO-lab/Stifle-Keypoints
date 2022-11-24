@@ -102,7 +102,8 @@ class JTMLCallback(Callback):
         return super().on_validation_batch_start(trainer, pl_module, batch, batch_idx, dataloader_idx)
     """
     
-    def on_validation_batch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs, batch, batch_idx: int, dataloader_idx: int) -> None:
+    # TODO: Fix for Stifle Keypoints (128 channel images and such...)
+    def BAD_on_validation_batch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs, batch, batch_idx: int, dataloader_idx: int) -> None:
         # TODO: Is outputs always just 1 loss value? If not, this might break bc it assumes outputs is comparable to min_val_loss
         if outputs.item() < self.min_val_loss:
             self.min_val_loss = outputs.item()
@@ -179,7 +180,8 @@ class JTMLCallback(Callback):
         return super().on_test_batch_start(trainer, pl_module, batch, batch_idx)
     """
 
-    def on_test_batch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs, batch, batch_idx: int, dataloader_idx) -> None:
+    # TODO: Fix for Stifle Keypoints (128 channel images and such...)
+    def BAD_on_test_batch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs, batch, batch_idx: int, dataloader_idx) -> None:
         self.wandb_run.log({'test/loss': outputs.item()})
 
         test_outputs = pl_module.forward(batch['image'])

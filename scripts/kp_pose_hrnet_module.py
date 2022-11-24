@@ -76,8 +76,10 @@ class KeypointNetModule(pl.LightningModule):
         #self.wandb_run.log('validation/loss', loss, on_step=True)
         self.wandb_run.log({'validation/loss': loss})
         #self.log('validation/loss', loss)
-        image = wandb.Image(val_output, caption='Validation output')
-        self.wandb_run.log({'val_output': image})
+        #print('val_output shape is : ' + str(val_output.shape))
+        # TODO: Cannot log images to wandb because the images have 128(=num_keypoints) channels
+        #image = wandb.Image(val_output, caption='Validation output')
+        #self.wandb_run.log({'val_output': image})
         return loss
 
     @nvtx.annotate("Test step", color="blue", domain="my_domain")

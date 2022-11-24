@@ -23,6 +23,24 @@ class kp_loss(torch.nn.Module):
         """
         return self.gaussian_amp * torch.exp(-torch.sum((x - y)**2) / (2 * self.gaussian_sigma**2))
     
+    def gaussian_heatmap(self, keypoint, img_h, img_w):
+        '''
+        Takes a keypoint and returns a heatmap of the keypoint.
+        '''
+        kp = keypoint
+
+        #heatmap = np.zeros((img_h, img_w))
+        # Changing these from np.linspace to torch.linspace and np.meshgrid to torch.meshgrid
+        g_x = torch.linspace(0.5, img_w - 0.5, img_w, device=kp.device)
+        g_y = torch.linspace(0.5, img_h - 0.5, img_h, device=kp.device)
+        g_x, g_y = torch.meshgrid(g_x, g_y)
+        g_z = self.gaussian_amp/(2*np.pi*self.gaussian_sigma**2) *torch.exp(
+            #-(((g_x - math.floor(point[0]*img_w)+0.5)**2 + (g_y - math.floor(
+            #    img_h*(1 - point[1]))+0.5)**2) /(2*GAUSSIAN_STDEV_HEATMAP**2))) # ADDED FLOOR TO MAKE SURE GAUSSIAN ALWAYS PEAKS ON PIXEL
+            # Why does the g_y term below have (1 - point[1])? Shouldn't it be (point[1])?
+            -(((g_x - (kp[0]*img_w))**2 + (g_y - (img_h*(1 - kp[1])))**2) /(2*self.gaussian_sigma**2)))
+        return g_z
+
     def forward(self, output, target):
         """
         Loss function for Keypoint Estimator.
@@ -40,7 +58,15 @@ class kp_loss(torch.nn.Module):
         
         for batch_idx, element in enumerate(target):
             for kp_idx, kp in enumerate(element):
-                raw_batch_loss += self.gaussian(output[batch_idx][kp_idx], target[batch_idx][kp_idx])
+                #raw_batch_loss += self.gaussian(output[batch_idx][kp_idx], target[batch_idx][kp_idx])
+                
+                # These asserts are just to make sure the shapes are correct. Can change if we're not doing 1024x1024.
+                assert output.shape[-2] == 1024, 'output[-2] is of shape ' + str(output.shape[-2])
+                assert output.shape[-1] == 1024, 'output[-1] is of shape ' + str(output.shape[-1])
+                target_heatmap = self.gaussian_heatmap(target[batch_idx][kp_idx],
+                                                        img_h=output.shape[-2],
+                                                        img_w=output.shape[-1])
+                raw_batch_loss += self.mse(output[batch_idx][kp_idx], target_heatmap)
         
         return raw_batch_loss / batch_size
 
