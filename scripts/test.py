@@ -11,7 +11,7 @@ import torch
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
-from scripts.kp_pose_hrnet_module import KeypointNetModule, PoseHighResolutionNet
+from kp_pose_hrnet_module import KeypointNetModule, PoseHighResolutionNet
 from datamodule import KeypointDataModule
 from callbacks import JTMLCallback
 from utility import create_config_dict
@@ -38,11 +38,11 @@ def main(config, wandb_run):
     # Since we are using an architecure written in PyTorch (PoseHRNet), we feed that architecture in.
     # We also pass our wandb_run object to we can log.
     if config.datamodule['CKPT_FILE'] != None:
-        model = KeypointNetModule.load_from_checkpoint(config.datamodule['CKPT_FILE'], pose_hrnet=pose_hrnet, wandb_run=wandb_run)
+        model = KeypointNetModule.load_from_checkpoint(config.datamodule['CKPT_FILE'], config=config, wandb_run=wandb_run)
         print('Checkpoint file loaded from ' + config.datamodule['CKPT_FILE'])
     elif config.datamodule['CKPT_FILE'] == None:
         try:
-            model = KeypointNetModule.load_from_checkpoint(CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] +'.ckpt', pose_hrnet=pose_hrnet, wandb_run=wandb_run)
+            model = KeypointNetModule.load_from_checkpoint(CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] +'.ckpt', config=config, wandb_run=wandb_run)
         except:
             print("No checkpoint .ckpt file in default location at " + CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] +'.ckpt')
     #model = MyLightningModule(pose_hrnet=pose_hrnet, wandb_run=wandb_run)
