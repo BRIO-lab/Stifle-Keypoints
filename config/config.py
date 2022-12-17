@@ -41,9 +41,9 @@ class Configuration:
         self.dataset = {
             'IMAGE_HEIGHT': 1024,
             'IMAGE_WIDTH': 1024,
-            'MODEL_TYPE': 'fem',        # how should we do this? not clear this is still best...
+            'MODEL_TYPE': 'tib',        # how should we do this? not clear this is still best...
             'CLASS_LABELS': {0: 'bone', 1: 'background'},
-            'NUM_KEY_POINTS': 128,
+            'NUM_KEY_POINTS': 16,
             'IMG_CHANNELS': 1,      # Is this differnt from self.module['NUM_IMAGE_CHANNELS']
             'STORE_DATA_RAM': False,
             'IMAGE_THRESHOLD': 0,

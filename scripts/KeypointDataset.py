@@ -103,7 +103,7 @@ class KeypointDataset(Dataset):
         print ("Successfully initialized " + self.evaluation_type + ' dataset!')
 
     def __len__(self):
-        # Bro why would we have more than one image per grid? Like bruh
+        # Bro why would we have more than one image per grid? Like bruh. SD.
         return self.grid_count*self.config.dataset['IMAGES_PER_GRID'] # Total number of images in data type (n) # FOR REAL USE
     
     # This function is only called when we are storing data in RAM (self.store_data_ram = True)
