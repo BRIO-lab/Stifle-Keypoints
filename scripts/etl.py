@@ -68,7 +68,8 @@ if RAW_DATA_FILE == -1:
 
         csvWriter.writerow(header)
 
-        for file in glob.glob(KP_PATH + '*' + config.dataset['MODEL_TYPE'] + '*.txt'):
+        for text_file in config.etl['KEYPOINT_TXT_FILES']:
+            file = KP_PATH + text_file
             # File reader
             f = open(file, 'r')
 

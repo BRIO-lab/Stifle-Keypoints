@@ -16,7 +16,7 @@ class Configuration:
         """
         self.init = {
             'PROJECT_NAME': 'Keypoint Estimator Development!',
-            'MODEL_NAME': 'KeypointTest',
+            'MODEL_NAME': 'Tib_16',
             'RUN_NAME': time.strftime('%Y-%m-%d-%H-%M-%S'),
             'WANDB_RUN_GROUP': 'Local',
             'FAST_DEV_RUN': False,  # Runs inputted batches (True->1) and disables logging and some callbacks
@@ -28,6 +28,7 @@ class Configuration:
             'RAW_DATA_FILE': -1,
             'DATA_DIR': "data",
             'KEYPOINT_DIRECTORY': "keypoints",
+            'KEYPOINT_TXT_FILES': ['tib_KPlabels_16.txt'],
             'VAL_SIZE':  0.2,       # looks sus
             'TEST_SIZE': 0.01,      # I'm not sure these two mean what we think
             #'random_state': np.random.randint(1,50)
@@ -80,7 +81,7 @@ class Configuration:
             'CKPT_FILE': None,
             'BATCH_SIZE': 1,
             'SHUFFLE': True,        # Only for training, for test and val this is set in the datamodule script to False
-            'NUM_WORKERS': os.cpu_count(),
+            'NUM_WORKERS': 2,
             'PIN_MEMORY': False,
             'SUBSET_PIXELS': True
         }
