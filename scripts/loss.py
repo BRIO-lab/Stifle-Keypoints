@@ -83,26 +83,32 @@ class res_kp_loss(torch.nn.Module):
         """
         The output is [batch_size, 2 * num_keypoints].
         I'll interpret the i'th prediction as (output[batch_idx][2*i], output[batch_idx][2*i + 1]).
-        [What is the target size?]
+        The target is [batch_size, num_keypoints, 2].
         """
-        
-        batch_size = target.shape[0]
-        raw_batch_loss = 0
-        
-        for batch_idx, element in enumerate(target):
-            for kp_idx, kp in enumerate(element):
-                #raw_batch_loss += self.gaussian(output[batch_idx][kp_idx], target[batch_idx][kp_idx])
-                
-                # These asserts are just to make sure the shapes are correct. Can change if we're not doing 1024x1024.
-                assert output.shape[-2] == 1024, 'output[-2] is of shape ' + str(output.shape[-2])
-                assert output.shape[-1] == 1024, 'output[-1] is of shape ' + str(output.shape[-1])
-                target_heatmap = self.gaussian_heatmap(target[batch_idx][kp_idx],
-                                                        img_h=output.shape[-2],
-                                                        img_w=output.shape[-1])
-                raw_batch_loss += self.mse(output[batch_idx][kp_idx], target_heatmap)
-        
-        return raw_batch_loss / batch_size
 
+        batch_size = target.shape[0]
+        num_keypoints = target.shape[1]
+        raw_batch_loss = 0
+
+        # The model output is 2 * num_keypoints, so we reshape it to (num_keypoint,2)
+        # so that it looks just like the target.
+        output = output.view(batch_size, num_keypoints, 2)
+
+        for batch_idx, _ in enumerate(target):
+            for i in range(0, num_keypoints):
+                raw_batch_loss += self.gaussian(output[batch_idx][i], target[batch_idx][i])
+
+        avg_loss = raw_batch_loss / batch_size
+        return avg_loss
+
+    def gaussian(self, pred, target):
+        """
+        pred and target are each a tensor of shape (2).
+        The first element of pred and target is the x coordinate
+        and the second element is the y coordinate.
+        """
+        return self.gaussian_amp/(2*np.pi*self.gaussian_sigma**2) *torch.exp(
+            -(((pred[0] - target[0])**2 + (pred[1] - target[1])**2) /(2*self.gaussian_sigma**2)))
 
 
 
