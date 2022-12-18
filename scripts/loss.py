@@ -9,6 +9,7 @@ import torch
 import numpy as np
 import pandas as pd
 import os
+import math
 
 class kp_loss(torch.nn.Module):
     def __init__(self, gaussian_amp=1, gaussian_sigma=1):
@@ -75,7 +76,7 @@ class kp_loss(torch.nn.Module):
 class res_kp_loss(torch.nn.Module):
     def __init__(self, gaussian_amp=1, gaussian_sigma=1):
         super(res_kp_loss, self).__init__()
-        self.mse = torch.nn.MSELoss()
+        #self.mse = torch.nn.MSELoss()
         self.gaussian_amp = gaussian_amp
         self.gaussian_sigma = gaussian_sigma
 
@@ -93,13 +94,25 @@ class res_kp_loss(torch.nn.Module):
         # The model output is 2 * num_keypoints, so we reshape it to (num_keypoint,2)
         # so that it looks just like the target.
         output = output.view(batch_size, num_keypoints, 2)
+        #print("output shape: " + str(output.shape))
+        #print("target shape: " + str(target.shape))
+        #print("asdf: " + str(output[0][0][0]))
+        #print("asdf: " + str(2*output[0][0][0]))
 
         for batch_idx, _ in enumerate(target):
             for i in range(0, num_keypoints):
-                raw_batch_loss += self.gaussian(output[batch_idx][i], target[batch_idx][i])
+                #raw_batch_loss += self.gaussian(output[batch_idx][i], target[batch_idx][i])
+                raw_batch_loss += self.mse(output[batch_idx][i], target[batch_idx][i])
 
         avg_loss = raw_batch_loss / batch_size
         return avg_loss
+    
+    def mse(self, pred, target):
+        print("pred: " + str(pred))
+        print("target: " + str(target))
+        mse_loss = (pred[0] - target[0])**2 + (pred[1] - target[1])**2
+        print("mse_loss: " + str(mse_loss))
+        return mse_loss
 
     def gaussian(self, pred, target):
         """
@@ -107,8 +120,20 @@ class res_kp_loss(torch.nn.Module):
         The first element of pred and target is the x coordinate
         and the second element is the y coordinate.
         """
-        return self.gaussian_amp/(2*np.pi*self.gaussian_sigma**2) *torch.exp(
-            -(((pred[0] - target[0])**2 + (pred[1] - target[1])**2) /(2*self.gaussian_sigma**2)))
+        #print("pred shape: " + str(pred.shape))
+        #print("target shape: " + str(target.shape))
+        print("pred: " + str(pred))
+        #print("pred x: " + str(pred[0]))
+        #print("pred datatype: " + str(pred.dtype))
+        print("target: " + str(target))
+        #print("target x: " + str(target[0]))
+        #print("sum x: " + str(pred[0] + target[0]))
+        #print("pred and target: " + str(pred) + " " + str(target))
+        #print("pred and target: " + " ".join([str(pred)[0], str(pred)[1], str(target)[0], str(target)[1]]))
+        #print(str(pred[0].item()))
+        gauss_loss = self.gaussian_amp/(math.sqrt(2*np.pi)*self.gaussian_sigma) *torch.exp(-((pred[0] - target[0])**2 + (pred[1] - target[1])**2) / (2*self.gaussian_sigma**2))
+        print("gauss_loss: " + str(gauss_loss))
+        return gauss_loss
 
 
 

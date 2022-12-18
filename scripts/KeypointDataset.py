@@ -20,6 +20,7 @@ import torch.nn.functional as F
 from skimage import io
 import math
 import numpy as np
+import cv2
 #from _____utility import create_gaussian_heatmap
 
 
@@ -73,10 +74,18 @@ class KeypointDataset(Dataset):
                                         header=None,
                                         names=['grid', self.config.dataset['MODEL_TYPE'] + '_kps'])
         input_data_frame = input_data_frame.iloc[1:].reset_index(drop=True)  # MIGHT NEED TO REINDEX BECAUSE INDEX STARTS AT 1
+        #label_data_frame = input_data_frame
+        #label_data_frame = []
+        #for image in input_data_frame['grid']:
+            #label_data_frame.append(config.dataset['MODEL_TYPE'] + '_label_' + image[0:-1])
 
         self.grids_fullpaths = input_data_frame['grid'].apply(lambda x: (self.config.datamodule['IMAGE_DIRECTORY'] + x[0:-1]))
         print('grids_fullpaths created')
         print(self.grids_fullpaths.iloc[0])
+
+        self.labels_fullpaths = input_data_frame['grid'].apply(lambda x: (self.config.datamodule['IMAGE_DIRECTORY'] + config.dataset["MODEL_TYPE"] + "_label_" + x[0:-1]))
+        print('labels_fullpaths created')
+        print(self.labels_fullpaths.iloc[0])
 
         # Calculate grid count
         self.grid_count = len(self.grids_fullpaths)
@@ -154,6 +163,7 @@ class KeypointDataset(Dataset):
             # Read in image grid
             grid_idx = idx//self.config.dataset['IMAGES_PER_GRID']
             grid_image = io.imread(self.grids_fullpaths[grid_idx], as_gray=True)
+            seg_label = io.imread(self.labels_fullpaths[grid_idx], as_gray=True)
 
             # Extract image from grid using top-left to bottom-right ordering
             idx_in_grid = idx%self.config.dataset['IMAGES_PER_GRID']
@@ -178,9 +188,27 @@ class KeypointDataset(Dataset):
                                                (orig_point[1]*self.config.dataset['IMAGE_HEIGHT'] - BOT_Y_PIX)/(TOP_Y_PIX-BOT_Y_PIX)])
                 #label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.cocropped_point_list, TOP_Y_PIX-BOT_Y_PIX, RIGHT_X_PIX-LEFT_X_PIX))
             else:
+                """
                 image = torch.FloatTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
                 #label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']))
+                seg_label = torch.FloatTensor(seg_label[None, :, :])
                 label = self.label_point_data[idx]      # trying this out
+                """
+        
+            if self.config.dataset['SUBSET_PIXELS'] == True:
+                label_dst = np.zeros_like(seg_label)
+                label_normed = cv2.normalize(seg_label, label_dst, alpha = 0, beta = 1, norm_type = cv2.NORM_MINMAX)
+                seg_label = label_normed
+
+                kernel = np.ones((30,30), np.uint8)
+                label_dilated = cv2.dilate(seg_label, kernel, iterations = 5)
+                image_subsetted = cv2.multiply(label_dilated, image)
+                image = image_subsetted
+
+            image = torch.FloatTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
+            #label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']))
+            seg_label = torch.FloatTensor(seg_label[None, :, :])
+            label = self.label_point_data[idx]      # trying this out
         
             # Form sample and transform if necessary
             sample = {'image': image, 'label': label}

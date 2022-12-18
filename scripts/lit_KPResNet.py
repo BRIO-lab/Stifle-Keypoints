@@ -77,7 +77,9 @@ class KeypointNetModule(pl.LightningModule):
         training_output = self(x)
         loss = self.loss_fn(training_output, training_batch_labels)
         #self.wandb_run.log('train/loss', loss, on_step=True)
+        print("Training loss: " + str(loss.item()))
         self.wandb_run.log({'train/loss': loss.item()})
+        #print("First outputs and labels " + str(training_output[0]) + " " + str(training_batch_labels[0].item()))
         #self.log(name="train/loss", value=loss)
         return loss
 
@@ -87,6 +89,7 @@ class KeypointNetModule(pl.LightningModule):
         x = val_batch
         val_output = self(x)
         loss = self.loss_fn(val_output, val_batch_labels)
+        print("Validation loss: " + str(loss.item()))
         self.wandb_run.log({'validation/loss': loss.item()})
         # TODO: Cannot log images to wandb because the images have 128(=num_keypoints) channels
         #image = wandb.Image(val_output, caption='Validation output')
