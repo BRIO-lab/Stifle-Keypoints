@@ -20,12 +20,12 @@ class Configuration:
             'RUN_NAME': time.strftime('%Y-%m-%d-%H-%M-%S'),
             'WANDB_RUN_GROUP': 'Local',
             'FAST_DEV_RUN': False,  # Runs inputted batches (True->1) and disables logging and some callbacks
-            'MAX_EPOCHS': 20,
+            'MAX_EPOCHS': 2,
             'MAX_STEPS': -1,    # -1 means it will do all steps and be limited by epochs
             'STRATEGY': None    # This is the training strategy. Should be 'ddp' for multi-GPU (like HPG)
         }
         self.etl = {
-            'RAW_DATA_FILE': -1,
+            'RAW_DATA_FILE': 'Tib_16.csv',
             'DATA_DIR': "data",
             'KEYPOINT_DIRECTORY': "keypoints",
             'KEYPOINT_TXT_FILES': ['tib_KPlabels_16.txt'],
@@ -53,7 +53,7 @@ class Configuration:
             'NUM_PRINT_IMG' : 1,
             'KP_PLOT_RAD' : 3,
 
-            'NUM_POINTS' : 128,
+            #'NUM_POINTS' : 128,
 
             'GAUSSIAN_STDDEV' : 5,
             'GAUSSIAN_AMP' : 1e6,
@@ -70,16 +70,19 @@ class Configuration:
             'per_grid_image_count_height' : 1, 
             'per_grid_image_count_width' : 1
         }
+
+        """
         # segmentation_net_module needs to be below dataset because it uses dataset['IMG_CHANNELS']
         self.keypoint_net_module = {
             'NUM_KEY_POINTS': 128,
             'NUM_IMG_CHANNELS': self.dataset['IMG_CHANNELS']
         }
+        """
 
         self.datamodule = {
             'IMAGE_DIRECTORY': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids/',
             'CKPT_FILE': None,
-            'BATCH_SIZE': 1,
+            'BATCH_SIZE': 2,
             'SHUFFLE': True,        # Only for training, for test and val this is set in the datamodule script to False
             'NUM_WORKERS': 2,
             'PIN_MEMORY': False,

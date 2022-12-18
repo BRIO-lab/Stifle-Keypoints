@@ -91,8 +91,7 @@ class KeypointDataset(Dataset):
         print('keypoints loaded in')
         # Store image tensors and label tensors to CPU RAM option (should be faster as long as there is room in the RAM)
         # We probably don't have enough RAM on hipergator to use this option. set to false in config to avoid out of memory error.
-        self.store_data_ram = self.store_data_ram
-        print('self.store_data_ram')
+        print('self.store_data_ram is ', self.store_data_ram)
         self.data_storage = []
         if self.store_data_ram:
             for idx in range(self.grid_count*self.config.datamodule['IMAGES_PER_GRID']): # Total number of images # THIS IS THE REAL FOR LOOP THAT GETS ALL IMAGES

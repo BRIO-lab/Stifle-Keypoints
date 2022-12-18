@@ -74,7 +74,7 @@ class kp_loss(torch.nn.Module):
 
 class res_kp_loss(torch.nn.Module):
     def __init__(self, gaussian_amp=1, gaussian_sigma=1):
-        super(kp_loss, self).__init__()
+        super(res_kp_loss, self).__init__()
         self.mse = torch.nn.MSELoss()
         self.gaussian_amp = gaussian_amp
         self.gaussian_sigma = gaussian_sigma
