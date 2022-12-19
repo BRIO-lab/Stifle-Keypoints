@@ -59,7 +59,7 @@ class KeypointDataset(Dataset):
         if evaluation_type in ['train', 'val', 'test']:
             self.evaluation_type = evaluation_type
         else:
-            raise Exception('Incorrect evaluation type! Must be either \'train\', \'validation\', or \'test\'.')
+            raise Exception('Incorrect evaluation type! Must be either \'train\', \'val\', or \'test\'.')
         
         # Create full paths to all grids and their Labels
         '''
@@ -211,7 +211,7 @@ class KeypointDataset(Dataset):
             label = self.label_point_data[idx]      # trying this out
         
             # Form sample and transform if necessary
-            sample = {'image': image, 'label': label}
+            sample = {'image': image, 'label': label, 'img_name': self.grids_fullpaths[grid_idx], 'seg_label': seg_label}
             if self.transform:
                 sample = self.transform(sample)
             return sample

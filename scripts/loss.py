@@ -108,10 +108,10 @@ class res_kp_loss(torch.nn.Module):
         return avg_loss
     
     def mse(self, pred, target):
-        print("pred: " + str(pred))
-        print("target: " + str(target))
+        #print("pred: " + str(pred))
+        #print("target: " + str(target))
         mse_loss = (pred[0] - target[0])**2 + (pred[1] - target[1])**2
-        print("mse_loss: " + str(mse_loss))
+        #print("mse_loss: " + str(mse_loss))
         return mse_loss
 
     def gaussian(self, pred, target):
