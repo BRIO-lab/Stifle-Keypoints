@@ -44,6 +44,7 @@ def main(config, wandb_run):
     elif config.datamodule['CKPT_FILE'] == None:
         try:
             model = KeypointNetModule.load_from_checkpoint(CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] +'.ckpt', config=config, wandb_run=wandb_run)
+            print('Using checkpoint file from ' + CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] +'.ckpt')
         except:
             print("No checkpoint .ckpt file in default location at " + CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] +'.ckpt')
     #model = MyLightningModule(pose_hrnet=pose_hrnet, wandb_run=wandb_run)

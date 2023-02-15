@@ -94,6 +94,7 @@ class KeypointNetModule(pl.LightningModule):
     @nvtx.annotate("Validation step", color="green", domain="my_domain")
     def validation_step(self, validation_batch, batch_idx):
         val_batch, val_batch_labels = validation_batch['image'], validation_batch['label']
+        plotting_imgs= val_batch['raw_image'] if self.config.dataset['SUBSET_PIXELS'] else val_batch['image']       # Using the raw image instead of the subsetted one
         img_names = validation_batch['img_name']
         x = val_batch
         val_output = self(x)
@@ -103,6 +104,7 @@ class KeypointNetModule(pl.LightningModule):
 
 
         # Logging the predictions
+        # TODO: Maybe this should be moved to a separate helper function in utility.py?
         # Must remember that val_output is a tensor of shape (batch_size, 2 * num_keypoints)
         # And x is a tensor of shape (batch_size, 1, self.image_height, self.image_width)
         num_images = val_batch.shape[0]
@@ -111,21 +113,28 @@ class KeypointNetModule(pl.LightningModule):
         # Move everything to CPU
         val_batch = val_batch.cpu()
         output = output.cpu()
+        output = np.array(output, dtype=np.float64)
+        labels = val_batch_labels.cpu()
+        labels = labels.numpy()
         # Flatten ax so it doesn't whine and moan
         ax = ax.flatten()
         for i in range(0, num_images):
-            output[i][:, 0] = +1 * output[i][:, 0] * 512 - 0 + 128
-            output[i][:, 1] = -1 * output[i][:, 1] * 512 + 512 + 256
+            output[i][:, 0] = +1 * output[i][:, 0] * 1024
+            output[i][:, 1] = -1 * output[i][:, 1] * 1024 + 1024
+            labels[i][:, 0] = +1 * labels[i][:, 0] * 1024
+            labels[i][:, 1] = -1 * labels[i][:, 1] * 1024 + 1024
             # Do some stuff so that img is shown correctly
             img = val_batch[i].numpy()
-            img = np.transpose(img, (1, 2, 0))
-            img = np.dstack((img, img, img))
+            img = np.transpose(img, (1, 2, 0))  # Transpose the output so that it's the same way as img
+            img = np.dstack((img, img, img))    # Make it 3 channels
             ax[i].imshow((img * 255).astype(np.uint8))  # The multiplying by 255 and stuff is so it doesn't get clipped or something
             for j in range(self.num_keypoints):
-                ax[i].text(output[i][j, 0], output[i][j, 1], str(j), color='red')
+                ax[i].text(labels[i][j, 0], labels[i][j, 1], str(j), color='blue')
+                ax[i].plot(labels[i][j, 0], labels[i][j, 1], 'g.')
+                ax[i].plot(output[i][j, 0], output[i][j, 1], 'r.')
             image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
             ax[i].set_title('Image {}'.format(image_name))
-        self.wandb_run.log({'validation/val_output': fig})
+        self.wandb_run.log({f'validation/val_batch_{batch_idx}': fig})
 
 
         return loss
@@ -135,6 +144,7 @@ class KeypointNetModule(pl.LightningModule):
     @nvtx.annotate("Test step", color="blue", domain="my_domain")
     def test_step(self, test_batch, batch_idx):
         test_batch_imgs, test_batch_labels = test_batch['image'], test_batch['label']
+        plotting_imgs= test_batch['raw_image'] if self.config.dataset['SUBSET_PIXELS'] else test_batch['image']       # Using the raw image instead of the subsetted one
         img_names = test_batch['img_name']
         x = test_batch_imgs
         test_output = self(x)
@@ -142,35 +152,35 @@ class KeypointNetModule(pl.LightningModule):
 
 
         # Logging the predictions
+        # TODO: Maybe this should be moved to a separate helper function in utility.py?
         num_images = test_batch_imgs.shape[0]
         output = test_output.view(num_images, self.num_keypoints, 2)
         fig, ax = matplotlib.pyplot.subplots(1, num_images, figsize=(10, 10), squeeze=False)
         # Move everything to CPU
-        test_batch_imgs = test_batch_imgs.cpu()
+        plotting_imgs = plotting_imgs.cpu()
         output = output.cpu()
         output = np.array(output, dtype=np.float64)
-        #output = +1 * output * 512 + 512
+        labels = test_batch_labels.cpu()
+        labels = labels.numpy()
         # Flatten ax so it doesn't whine and moan
         ax = ax.flatten()
         for i in range(0, num_images):
-            output[i][:, 0] = +1 * output[i][:, 0] * 512 - 0 + 128
-            output[i][:, 1] = -1 * output[i][:, 1] * 512 + 512 + 256
+            output[i][:, 0] = +1 * output[i][:, 0] * 1024
+            output[i][:, 1] = -1 * output[i][:, 1] * 1024 + 1024
+            labels[i][:, 0] = +1 * labels[i][:, 0] * 1024
+            labels[i][:, 1] = -1 * labels[i][:, 1] * 1024 + 1024
             # Do some stuff so that img is shown correctly
-            img = test_batch_imgs[i].numpy()
-            img = np.transpose(img, (1, 2, 0))
-            # Transpose the output so that it's the same way as img
-            #output[i] = np.transpose(output[i], (1, 0))
-            img = np.dstack((img, img, img))
+            img = plotting_imgs[i].numpy()
+            img = np.transpose(img, (1, 2, 0))  # Transpose the output so that it's the same way as img
+            img = np.dstack((img, img, img))    # Make it 3 channels
             ax[i].imshow((img * 255).astype(np.uint8))
             for j in range(self.num_keypoints):
-                #ax[i].text(output[i][j, 0], output[i][j, 1], str(j), color='red')
-                ax[i].text(output[i][j, 0], output[i][j, 1], str(j), color='red')
-                #print("type of output[i][j, 0].item(): " + str(type(output[i][j, 0].item())))
-                #ax[i].text(output[i][j, 0] * 512 + 512, output[i][j, 1] * 512 + 512, str(j), color='red')
-                print(f'point {j} is ' + str(output[i][j, 0]) + " " + str(output[i][j, 1]))
+                ax[i].text(labels[i][j, 0], labels[i][j, 1], str(j), color='blue')
+                ax[i].plot(labels[i][j, 0], labels[i][j, 1], 'g.')
+                ax[i].plot(output[i][j, 0], output[i][j, 1], 'r.')
             image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
             ax[i].set_title('Image {}'.format(image_name))
-        self.wandb_run.log({f'test/output_batch_{batch_idx}': fig})
+        self.wandb_run.log({f'test/test_batch_{batch_idx}': fig})
 
 
 

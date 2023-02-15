@@ -203,15 +203,22 @@ class KeypointDataset(Dataset):
                 kernel = np.ones((30,30), np.uint8)
                 label_dilated = cv2.dilate(seg_label, kernel, iterations = 5)
                 image_subsetted = cv2.multiply(label_dilated, image)
+                raw_image = image             # Save raw image for visualization
                 image = image_subsetted
 
             image = torch.FloatTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
+            raw_image = torch.FloatTensor(raw_image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
             #label = torch.FloatTensor(create_gaussian_heatmap(self.config, self.label_point_data[idx], self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']))
             seg_label = torch.FloatTensor(seg_label[None, :, :])
             label = self.label_point_data[idx]      # trying this out
         
             # Form sample and transform if necessary
-            sample = {'image': image, 'label': label, 'img_name': self.grids_fullpaths[grid_idx], 'seg_label': seg_label}
+            sample = {'image': image,
+                        'label': label,
+                        'img_name': self.grids_fullpaths[grid_idx],
+                        'seg_label': seg_label,
+                        'raw_image': raw_image if self.config.dataset['SUBSET_PIXELS'] else None}
+            #sample['raw_image'] = raw_image if self.config.dataset['SUBSET_PIXELS'] else None
             if self.transform:
                 sample = self.transform(sample)
             return sample
