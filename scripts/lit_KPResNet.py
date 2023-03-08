@@ -47,7 +47,7 @@ class KeypointNetModule(pl.LightningModule):
         
         #self.my_dict["resnet"] = make_resnet(3, 64, 3, 1)
         # this 
-        self.my_dict["resnet"] = torchvision.models.resnet34(pretrained=True)
+        self.my_dict["resnet"] = torchvision.models.resnet34(weights='IMAGENET1K_V1')
 
         #assert self.num_keypoints <= 50, "If num_keypoints > 50, the last linear layer is growing bigger, which seems unreasonable."
         # The above assertion does not need to be made because it could be that the model is just finding a lower-dimensional representation of the keypoints, which, if accurate, would be a good thing.
