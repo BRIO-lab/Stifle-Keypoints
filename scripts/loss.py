@@ -74,6 +74,7 @@ class kp_loss(torch.nn.Module):
 
 
 class res_kp_loss(torch.nn.Module):
+    # TODO: This does not use any Gaussian function. It just uses MSE. Should we remove all the Gaussian stuff?
     def __init__(self, gaussian_amp=1, gaussian_sigma=1):
         super(res_kp_loss, self).__init__()
         #self.mse = torch.nn.MSELoss()

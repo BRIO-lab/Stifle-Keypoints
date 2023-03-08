@@ -18,8 +18,8 @@ class Configuration:
         }
         """
         self.init = {
-            'PROJECT_NAME': 'Keypoint Estimator Development!',
-            'MODEL_NAME': 'Tib_16',
+            'PROJECT_NAME': 'Keypoint Estimation',
+            'MODEL_NAME': 'Fem_64KP',
             'RUN_NAME': time.strftime('%Y-%m-%d-%H-%M-%S'),
             'WANDB_RUN_GROUP': 'Local',
             'FAST_DEV_RUN': False,  # Runs inputted batches (True->1) and disables logging and some callbacks
@@ -28,8 +28,9 @@ class Configuration:
             'STRATEGY': None    # This is the training strategy. Should be 'ddp' for multi-GPU (like HPG)
         }
         self.etl = {
-            'RAW_DATA_FILE': 'Tib_16.csv',
+            'RAW_DATA_FILE': -1,
             'DATA_DIR': "data",
+            # Lol what is this?
             'KEYPOINT_DIRECTORY': "keypoints",
             'KEYPOINT_TXT_FILES': ['tib_KPlabels_16.txt'],
             'VAL_SIZE':  0.2,       # looks sus
@@ -43,17 +44,19 @@ class Configuration:
         }
 
         self.dataset = {
+            'DATA_NAME': 'Ten_Dogs_64KP',
             'SUBSET_PIXELS': True,
             'IMAGE_HEIGHT': 1024,
             'IMAGE_WIDTH': 1024,
-            'MODEL_TYPE': 'tib',        # how should we do this? not clear this is still best...
+            'MODEL_TYPE': 'fem',        # how should we do this? not clear this is still best...
             'CLASS_LABELS': {0: 'bone', 1: 'background'},
-            'NUM_KEY_POINTS': 16,
-            'IMG_CHANNELS': 1,      # Is this differnt from self.module['NUM_IMAGE_CHANNELS']
+            'NUM_KEY_POINTS': 64,
+            'IMG_CHANNELS': 1,      # Is this different from self.module['NUM_IMAGE_CHANNELS']
             'STORE_DATA_RAM': False,
             'IMAGE_THRESHOLD': 0,
-            'USE_ALBUMENTATIONS': True,
+            'USE_ALBUMENTATIONS': False,
 
+            # What do these do?
             'NUM_PRINT_IMG' : 1,
             'KP_PLOT_RAD' : 3,
 
@@ -85,9 +88,9 @@ class Configuration:
 
         self.datamodule = {
             'IMAGE_DIRECTORY': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids/',
-            'CKPT_FILE': '~/Documents/GitRepos/Stifle-Keypoints/checkpoints/12_18_Tib_16.ckpt',
+            'CKPT_FILE': '~/Documents/GitRepos/Stifle-Keypoints/checkpoints/3_8_23_fem_64KP.ckpt',
             'BATCH_SIZE': 2,
-            'SHUFFLE': True,        # Only for training, for test and val this is set in the datamodule script to False
+            'SHUFFLE': True,        # Only for training; for test and val this is set in the datamodule script to False
             'NUM_WORKERS': 2,
             'PIN_MEMORY': False
             #'SUBSET_PIXELS': True - this is now in dataset

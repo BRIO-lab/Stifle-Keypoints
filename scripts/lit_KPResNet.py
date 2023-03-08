@@ -40,7 +40,7 @@ class KeypointNetModule(pl.LightningModule):
         self.my_dict = nn.ModuleDict({})
 
         self.my_dict["pre_block"] = nn.Sequential(
-            nn.Conv2d(self.in_channels, 3, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.Conv2d(self.in_channels, 3, kernel_size=1, stride=1, padding=0, bias=False),     # This is just to convert the input channels to 3, which is what the resnet expects.
             nn.BatchNorm2d(3),
             nn.ReLU()
         )
@@ -49,7 +49,9 @@ class KeypointNetModule(pl.LightningModule):
         # this 
         self.my_dict["resnet"] = torchvision.models.resnet34(pretrained=True)
 
-        assert self.num_keypoints <= 50, "If num_keypoints > 50, the last linear layer is growing bigger, which seems unreasonable."
+        #assert self.num_keypoints <= 50, "If num_keypoints > 50, the last linear layer is growing bigger, which seems unreasonable."
+        # The above assertion does not need to be made because it could be that the model is just finding a lower-dimensional representation of the keypoints, which, if accurate, would be a good thing.
+        # ! If model performance is bad is bad when using 64 keypoints, then it may be a good idea to reexamine this.
 
         self.my_dict["keypoints"] = nn.Sequential(
             nn.Linear(1000, 500),
