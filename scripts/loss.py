@@ -88,8 +88,8 @@ class res_kp_loss(torch.nn.Module):
         The target is [batch_size, num_keypoints, 2].
         """
 
-        print("output shape: " + str(output.shape))
-        print("target shape: " + str(target.shape))
+        #print("output shape: " + str(output.shape))
+        #print("target shape: " + str(target.shape))
         batch_size = target.shape[0]
         #num_keypoints = int(target.shape[1] / 2)     # Since the output is 2 * num_keypoints per batch.
         num_keypoints = target.shape[1]     # Since the output is 2 * num_keypoints per batch.
@@ -98,8 +98,8 @@ class res_kp_loss(torch.nn.Module):
         # The model output is 2 * num_keypoints, so we reshape it to (num_keypoint,2)
         # so that it looks just like the target.
         output = output.view(batch_size, num_keypoints, 2)
-        print("output shape: " + str(output.shape))
-        print("target shape: " + str(target.shape))
+        #print("output shape: " + str(output.shape))
+        #print("target shape: " + str(target.shape))
         #print("output shape: " + str(output.shape))
         #print("target shape: " + str(target.shape))
         #print("asdf: " + str(output[0][0][0]))
@@ -128,10 +128,10 @@ class res_kp_loss(torch.nn.Module):
         """
         #print("pred shape: " + str(pred.shape))
         #print("target shape: " + str(target.shape))
-        print("pred: " + str(pred))
+        #print("pred: " + str(pred))
         #print("pred x: " + str(pred[0]))
         #print("pred datatype: " + str(pred.dtype))
-        print("target: " + str(target))
+        #print("target: " + str(target))
         #print("target x: " + str(target[0]))
         #print("sum x: " + str(pred[0] + target[0]))
         #print("pred and target: " + str(pred) + " " + str(target))

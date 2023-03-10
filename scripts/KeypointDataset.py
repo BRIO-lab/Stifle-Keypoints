@@ -77,6 +77,7 @@ class KeypointDataset(torch.utils.data.Dataset):
         kp_label = [np.array([float(x) for x in list(filter(None, kp.split(' ')))]) for kp in kp_label]
         kp_label = np.array(kp_label)
         
+        # * Subset Pixels
         if self.config.dataset['SUBSET_PIXELS'] == True:
             label_dst = np.zeros_like(seg_label)
             label_normed = cv2.normalize(seg_label, label_dst, alpha = 0, beta = 1, norm_type = cv2.NORM_MINMAX)
@@ -102,6 +103,6 @@ class KeypointDataset(torch.utils.data.Dataset):
                     'seg_label': seg_label,
                     'full_image': full_image}
         assert(self.transform is None, "Transforms not implemented yet!")
-        if self.transform:
-            sample = self.transform(sample)     # TODO: How is this going to work?
+        if self.transform and self.config.dataset['USE_ALBUMENTATIONS'] == True:
+            sample = self.transform(sample)     # TODO: Implement transforms. Seems like we'll have to reshape the keypoints to be num_keypoints x 2 instead of 2*num_keypoints x 1
         return sample

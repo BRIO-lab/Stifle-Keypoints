@@ -111,6 +111,9 @@ class KeypointNetModule(pl.LightningModule):
         # And x is a tensor of shape (batch_size, 1, self.image_height, self.image_width)
         fig_output = plot_val_images(images=full_val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
         self.wandb_run.log({f'validation/val_output_{batch_idx}': fig_output})
+        # Plot the model output from what the model actually sees
+        fig_subsetted_output = plot_val_images(images=val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
+        self.wandb_run.log({f'validation/val_subsetted_output_{batch_idx}': fig_subsetted_output})
         # Just plot the input images
         fig_input = plot_inputs(images=full_val_batch, img_names=img_names, title='Input Image')
         self.wandb_run.log({f'validation/val_input_{batch_idx}': fig_input})
