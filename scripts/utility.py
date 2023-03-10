@@ -6,6 +6,8 @@ Changed by Sasank Desaraju
 import logging
 from pathlib import Path
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 import yaml
 import matplotlib.pyplot as plt
 import torch
@@ -60,6 +62,55 @@ def create_config_dict(config) -> dict:
     
     return config_dict
 
+def plot_val_images(images, preds, labels, img_names, num_keypoints, title='Image'):
+
+    num_images = images.shape[0]
+    preds = preds.view(num_images, num_keypoints, 2)
+    fig, ax = plt.subplots(1, num_images, figsize=(10, 10), squeeze=False)
+    # Move everything to CPU
+    images = images.cpu()
+    preds = preds.cpu()
+    preds = np.array(preds, dtype=np.float64)
+    print('preds shape: ', preds.shape)
+    labels = labels.cpu()
+    labels = labels.numpy()
+    # Flatten ax so it doesn't whine and moan
+    ax = ax.flatten()
+    for i in range(0, num_images):
+        preds[i][:, 0] = +1 * preds[i][:, 0] * 1024
+        preds[i][:, 1] = -1 * preds[i][:, 1] * 1024 + 1024
+        labels[i][:, 0] = +1 * labels[i][:, 0] * 1024
+        labels[i][:, 1] = -1 * labels[i][:, 1] * 1024 + 1024
+        # Do some stuff so that img is shown correctly
+        img = images[i].numpy()
+        img = np.transpose(img, (1, 2, 0))  # Transpose the output so that it's the same way as img
+        img = np.dstack((img, img, img))    # Make it 3 channels
+        ax[i].imshow((img * 255).astype(np.uint8))  # The multiplying by 255 and stuff is so it doesn't get clipped or something
+        for j in range(num_keypoints):
+            #ax[i].text(labels[i][j, 0], labels[i][j, 1], str(j), color='m')        # Silenced this for now since we have 64 keypoints
+            ax[i].plot(labels[i][j, 0], labels[i][j, 1], color='orange', marker='.', markersize=5)
+            ax[i].plot(preds[i][j, 0], preds[i][j, 1], color='blue', marker='.', markersize=5)
+            ax[i].plot([labels[i][j, 0], preds[i][j, 0]], [labels[i][j, 1], preds[i][j, 1]], color='limegreen', linestyle='-')
+        image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
+        ax[i].set_title(title + ' {}'.format(image_name))
+    return fig
+
+def plot_inputs(images, img_names, title='Input Image'):
+    # Plot just the inputs to a fig
+    num_images = images.shape[0]
+    fig, ax = plt.subplots(1, num_images, figsize=(10, 10), squeeze=False)
+    # Move everything to CPU
+    images = images.cpu()
+    # Flatten ax so it doesn't whine and moan
+    ax = ax.flatten()
+    for i in range(0, num_images):
+        img = images[i].numpy()
+        img = np.transpose(img, (1, 2, 0))  # Transpose the output so that it's the same way as img
+        img = np.dstack((img, img, img))    # Make it 3 channels
+        ax[i].imshow((img * 255).astype(np.uint8))  # The multiplying by 255 and stuff is so it doesn't get clipped or something
+        image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
+        ax[i].set_title(title + ' {}'.format(image_name))
+    return fig
 
 def run_metrics(output_image, label_image, image_threshold) -> dict:
     iou = iou_metric(output_image, label_image, image_threshold)

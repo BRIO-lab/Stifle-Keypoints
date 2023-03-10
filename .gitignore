@@ -1,5 +1,8 @@
 #What files for git to ignore
 
+# __pycache__ is for compiled .pyc files
+__pycache__/
+
 *.ckpt
 checkpoints/*
 wandb/*

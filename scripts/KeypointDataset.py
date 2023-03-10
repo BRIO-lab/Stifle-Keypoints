@@ -60,6 +60,7 @@ class KeypointDataset(torch.utils.data.Dataset):
 
         # Get the image
         image = io.imread(os.path.join(self.config.datamodule['IMAGE_DIRECTORY'], image_name))
+        full_image = image             # Save full image (no subset_pixels) for visualization
 
         # Get the keypoint labels and segmentation labels
         if self.config.dataset['MODEL_TYPE'] == 'fem':
@@ -84,11 +85,10 @@ class KeypointDataset(torch.utils.data.Dataset):
             kernel = np.ones((30,30), np.uint8)
             label_dilated = cv2.dilate(seg_label, kernel, iterations = 5)
             image_subsetted = cv2.multiply(label_dilated, image)
-            raw_image = image             # Save raw image for visualization
             image = image_subsetted
 
         image = torch.FloatTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
-        raw_image = torch.FloatTensor(raw_image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
+        full_image = torch.FloatTensor(full_image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
         seg_label = torch.FloatTensor(seg_label[None, :, :])
         #kp_label = torch.FloatTensor(kp_label.reshape(-1))      # Reshape to 1D array so that it's 2*num_keypoints long
         kp_label = torch.FloatTensor(kp_label)      # Reshape to 1D array so that it's 2*num_keypoints long
@@ -100,7 +100,7 @@ class KeypointDataset(torch.utils.data.Dataset):
                     'img_name': image_name,
                     'kp_label': kp_label,
                     'seg_label': seg_label,
-                    'raw_image': raw_image if self.config.dataset['SUBSET_PIXELS'] else None}
+                    'full_image': full_image}
         assert(self.transform is None, "Transforms not implemented yet!")
         if self.transform:
             sample = self.transform(sample)     # TODO: How is this going to work?
