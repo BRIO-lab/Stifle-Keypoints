@@ -74,6 +74,7 @@ class kp_loss(torch.nn.Module):
 
 
 class res_kp_loss(torch.nn.Module):
+    # TODO: This does not use any Gaussian function. It just uses MSE. Should we remove all the Gaussian stuff?
     def __init__(self, gaussian_amp=1, gaussian_sigma=1):
         super(res_kp_loss, self).__init__()
         #self.mse = torch.nn.MSELoss()
@@ -87,13 +88,18 @@ class res_kp_loss(torch.nn.Module):
         The target is [batch_size, num_keypoints, 2].
         """
 
+        print("output shape: " + str(output.shape))
+        print("target shape: " + str(target.shape))
         batch_size = target.shape[0]
-        num_keypoints = target.shape[1]
+        #num_keypoints = int(target.shape[1] / 2)     # Since the output is 2 * num_keypoints per batch.
+        num_keypoints = target.shape[1]     # Since the output is 2 * num_keypoints per batch.
         raw_batch_loss = 0
 
         # The model output is 2 * num_keypoints, so we reshape it to (num_keypoint,2)
         # so that it looks just like the target.
         output = output.view(batch_size, num_keypoints, 2)
+        print("output shape: " + str(output.shape))
+        print("target shape: " + str(target.shape))
         #print("output shape: " + str(output.shape))
         #print("target shape: " + str(target.shape))
         #print("asdf: " + str(output[0][0][0]))
@@ -108,10 +114,10 @@ class res_kp_loss(torch.nn.Module):
         return avg_loss
     
     def mse(self, pred, target):
-        print("pred: " + str(pred))
-        print("target: " + str(target))
+        #print("pred: " + str(pred))
+        #print("target: " + str(target))
         mse_loss = (pred[0] - target[0])**2 + (pred[1] - target[1])**2
-        print("mse_loss: " + str(mse_loss))
+        #print("mse_loss: " + str(mse_loss))
         return mse_loss
 
     def gaussian(self, pred, target):

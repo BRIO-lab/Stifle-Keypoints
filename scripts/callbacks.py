@@ -24,6 +24,7 @@ class JTMLCallback(Callback):
     *********************** Init ***********************
     """
 
+    """
     # TODO: This hook will be deprecated in v1.8 ! What do?
     def on_init_start(self, trainer: "pl.Trainer") -> None:
         print('\n' + 20 * '*' + "  Starting Initialization!  " + 20 * '*' + '\n')
@@ -33,6 +34,7 @@ class JTMLCallback(Callback):
     def on_init_end(self, trainer: "pl.Trainer") -> None:
         print('\n' + 20 * '*' + "  Finished Initialization!  " + 20 * '*' + '\n')
         return super().on_init_end(trainer)
+    """
 
     """
     *********************** Fit ***********************
@@ -62,11 +64,11 @@ class JTMLCallback(Callback):
 
     def on_train_epoch_start(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
         print('\n' + 20 * '*' + f'Starting train epoch {pl_module.current_epoch}!' + 20 * '*' + '\n')
-        return super().on_epoch_start(trainer, pl_module)
+        return super().on_train_epoch_start(trainer, pl_module)
 
     def on_train_epoch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
         print('\n' + 20 * '*' + f'Finished train epoch {pl_module.current_epoch}!' + 20 * '*' + '\n')
-        return super().on_epoch_end(trainer, pl_module)
+        return super().on_train_epoch_end(trainer, pl_module)
 
     """
     def on_train_batch_start(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
