@@ -82,7 +82,7 @@ class KeypointNetModule(pl.LightningModule):
 
     @nvtx.annotate("Training step", color="red", domain="my_domain")
     def training_step(self, train_batch, batch_idx):
-        training_batch, training_batch_labels = train_batch['image'], train_batch['label']
+        training_batch, training_batch_labels = train_batch['image'], train_batch['kp_label']
         x = training_batch
         training_output = self(x)
         loss = self.loss_fn(training_output, training_batch_labels)
@@ -95,8 +95,8 @@ class KeypointNetModule(pl.LightningModule):
 
     @nvtx.annotate("Validation step", color="green", domain="my_domain")
     def validation_step(self, validation_batch, batch_idx):
-        val_batch, val_batch_labels = validation_batch['image'], validation_batch['label']
-        plotting_imgs= val_batch['raw_image'] if self.config.dataset['SUBSET_PIXELS'] else val_batch['image']       # Using the raw image instead of the subsetted one
+        val_batch, val_batch_labels = validation_batch['image'], validation_batch['kp_label']
+        plotting_imgs= val_batch['raw_image'] if self.config.dataset['USE_ALBUMENTATIONS'] else val_batch['image']       # Using the raw image instead of the subsetted one
         img_names = validation_batch['img_name']
         x = val_batch
         val_output = self(x)
@@ -105,7 +105,7 @@ class KeypointNetModule(pl.LightningModule):
         self.wandb_run.log({'validation/loss': loss.item()})
 
 
-        # Logging the predictions
+        # * Logging the predictions
         # TODO: Maybe this should be moved to a separate helper function in utility.py?
         # Must remember that val_output is a tensor of shape (batch_size, 2 * num_keypoints)
         # And x is a tensor of shape (batch_size, 1, self.image_height, self.image_width)
@@ -131,9 +131,10 @@ class KeypointNetModule(pl.LightningModule):
             img = np.dstack((img, img, img))    # Make it 3 channels
             ax[i].imshow((img * 255).astype(np.uint8))  # The multiplying by 255 and stuff is so it doesn't get clipped or something
             for j in range(self.num_keypoints):
+                # TODO: Add line segments between the predicted and ground-truth keypoints
                 ax[i].text(labels[i][j, 0], labels[i][j, 1], str(j), color='blue')
-                ax[i].plot(labels[i][j, 0], labels[i][j, 1], 'g.')
-                ax[i].plot(output[i][j, 0], output[i][j, 1], 'r.')
+                ax[i].plot(labels[i][j, 0], labels[i][j, 1], 'o.')
+                ax[i].plot(output[i][j, 0], output[i][j, 1], 'b.')
             image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
             ax[i].set_title('Image {}'.format(image_name))
         self.wandb_run.log({f'validation/val_batch_{batch_idx}': fig})

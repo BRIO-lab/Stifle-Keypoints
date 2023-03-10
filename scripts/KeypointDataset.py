@@ -71,6 +71,10 @@ class KeypointDataset(torch.utils.data.Dataset):
         else:
             raise Exception('Incorrect model type! Must be either \'fem\' or \'tib\'.')
 
+        kp_label = kp_label[2:-2]
+        kp_label = kp_label.split(']\n [')
+        kp_label = [np.array([float(x) for x in list(filter(None, kp.split(' ')))]) for kp in kp_label]
+        kp_label = np.array(kp_label)
         
         if self.config.dataset['SUBSET_PIXELS'] == True:
             label_dst = np.zeros_like(seg_label)
@@ -86,6 +90,8 @@ class KeypointDataset(torch.utils.data.Dataset):
         image = torch.FloatTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
         raw_image = torch.FloatTensor(raw_image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
         seg_label = torch.FloatTensor(seg_label[None, :, :])
+        #kp_label = torch.FloatTensor(kp_label.reshape(-1))      # Reshape to 1D array so that it's 2*num_keypoints long
+        kp_label = torch.FloatTensor(kp_label)      # Reshape to 1D array so that it's 2*num_keypoints long
 
 
     
