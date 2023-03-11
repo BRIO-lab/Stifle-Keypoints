@@ -71,7 +71,7 @@ def plot_val_images(images, preds, labels, img_names, num_keypoints, title='Imag
     images = images.cpu()
     preds = preds.cpu()
     preds = np.array(preds, dtype=np.float64)
-    print('preds shape: ', preds.shape)
+    #print('preds shape: ', preds.shape)            # This print statement messes up the pytorch_lightning logging progress bar lol
     labels = labels.cpu()
     labels = labels.numpy()
     # Flatten ax so it doesn't whine and moan
