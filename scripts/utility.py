@@ -93,6 +93,7 @@ def plot_val_images(images, preds, labels, img_names, num_keypoints, title='Imag
             ax[i].plot([labels[i][j, 0], preds[i][j, 0]], [labels[i][j, 1], preds[i][j, 1]], color='limegreen', linestyle='-')
         image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
         ax[i].set_title(title + ' {}'.format(image_name))
+    plt.close()
     return fig
 
 def plot_inputs(images, img_names, title='Input Image'):
@@ -110,6 +111,7 @@ def plot_inputs(images, img_names, title='Input Image'):
         ax[i].imshow((img * 255).astype(np.uint8))  # The multiplying by 255 and stuff is so it doesn't get clipped or something
         image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
         ax[i].set_title(title + ' {}'.format(image_name))
+    plt.close()
     return fig
 
 def run_metrics(output_image, label_image, image_threshold) -> dict:
