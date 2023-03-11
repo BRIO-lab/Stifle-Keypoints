@@ -3,6 +3,7 @@
 # __pycache__ is for compiled .pyc files
 scripts/__pycache__/
 scripts/__pycache__/*
+config/__pycache__/*
 
 *.ckpt
 checkpoints/*
