@@ -125,44 +125,26 @@ class KeypointNetModule(pl.LightningModule):
 
     @nvtx.annotate("Test step", color="blue", domain="my_domain")
     def test_step(self, test_batch, batch_idx):
-        test_batch_imgs, test_batch_labels = test_batch['image'], test_batch['label']
-        plotting_imgs= test_batch['raw_image'] if self.config.dataset['SUBSET_PIXELS'] else test_batch['image']       # Using the raw image instead of the subsetted one
+        test_batch, test_batch_labels = test_batch['image'], test_batch['kp_label']
+        full_test_batch = test_batch['full_image']     # 'Full' here means the images without subset_pixel applied
         img_names = test_batch['img_name']
-        x = test_batch_imgs
+        x = test_batch
         test_output = self(x)
         loss = self.loss_fn(test_output, test_batch_labels)
 
 
         # Logging the predictions
-        # TODO: Maybe this should be moved to a separate helper function in utility.py?
-        num_images = test_batch_imgs.shape[0]
-        output = test_output.view(num_images, self.num_keypoints, 2)
-        fig, ax = matplotlib.pyplot.subplots(1, num_images, figsize=(10, 10), squeeze=False)
-        # Move everything to CPU
-        plotting_imgs = plotting_imgs.cpu()
-        output = output.cpu()
-        output = np.array(output, dtype=np.float64)
-        labels = test_batch_labels.cpu()
-        labels = labels.numpy()
-        # Flatten ax so it doesn't whine and moan
-        ax = ax.flatten()
-        for i in range(0, num_images):
-            output[i][:, 0] = +1 * output[i][:, 0] * 1024
-            output[i][:, 1] = -1 * output[i][:, 1] * 1024 + 1024
-            labels[i][:, 0] = +1 * labels[i][:, 0] * 1024
-            labels[i][:, 1] = -1 * labels[i][:, 1] * 1024 + 1024
-            # Do some stuff so that img is shown correctly
-            img = plotting_imgs[i].numpy()
-            img = np.transpose(img, (1, 2, 0))  # Transpose the output so that it's the same way as img
-            img = np.dstack((img, img, img))    # Make it 3 channels
-            ax[i].imshow((img * 255).astype(np.uint8))
-            for j in range(self.num_keypoints):
-                ax[i].text(labels[i][j, 0], labels[i][j, 1], str(j), color='blue')
-                ax[i].plot(labels[i][j, 0], labels[i][j, 1], 'g.')
-                ax[i].plot(output[i][j, 0], output[i][j, 1], 'r.')
-            image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
-            ax[i].set_title('Image {}'.format(image_name))
-        self.wandb_run.log({f'test/test_batch_{batch_idx}': fig})
+        # Must remember that test_output is a tensor of shape (batch_size, 2 * num_keypoints)
+        # And x is a tensor of shape (batch_size, 1, self.image_height, self.image_width)
+        data_set_name = 'naive_set' if self.config.datamodule['USE_NAIVE_TESTSET'] else 'test_set'
+        fig_output_vector = plot_test_images(images=full_test_batch, preds=test_output, labels=test_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
+        fig_subsetted_output_vector = plot_test_images(images=test_batch, preds=test_output, labels=test_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
+        fig_input_vector = plot_inputs(images=full_test_batch, img_names=img_names, title='Input Image')
+
+        for i in range(len(fig_output_vector)):
+            self.wandb_run.log({f'test/{data_set_name}/{img_names[i]}/full_output': fig_output_vector[i]})
+            self.wandb_run.log({f'test/{data_set_name}/{img_names[i]}/subsetted_output': fig_subsetted_output_vector[i]})
+            self.wandb_run.log({f'test/{data_set_name}/{img_names[i]}/input': fig_input_vector[i]})
 
 
 

@@ -88,7 +88,8 @@ class Configuration:
 
         self.datamodule = {
             'IMAGE_DIRECTORY': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids/',
-            'CKPT_FILE': '~/Documents/GitRepos/Stifle-Keypoints/checkpoints/3_8_23_fem_64KP.ckpt',
+            'CKPT_FILE': '~/Documents/GitRepos/Stifle-Keypoints/checkpoints/Tib64_200Epochs.ckpt',
+            'USE_NAIVE_TESTSET': True,
             'BATCH_SIZE': 2,
             'SHUFFLE': True,        # Only for training; for test and val this is set in the datamodule script to False
             'NUM_WORKERS': 2,

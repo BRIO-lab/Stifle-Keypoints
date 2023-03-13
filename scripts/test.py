@@ -59,12 +59,13 @@ def main(config, wandb_run):
 
     # Our trainer object contains a lot of important info.
     trainer = pl.Trainer(accelerator='gpu',
-        devices=-1,     # use all available devices (GPUs)
+        devices=1,              # It is recommended to use devices=1 since distributed strategies use `DistributedSampler` internally.
         auto_select_gpus=True,  # helps use all GPUs, not quite understood...
         #logger=wandb_logger,
         default_root_dir=os.getcwd(),
         callbacks=[JTMLCallback(config, wandb_run)],    # pass in the callbacks we want
         #callbacks=[save_best_val_checkpoint_callback],
+        log_every_n_steps=1,        # log every step since it's test
         fast_dev_run=config.init['FAST_DEV_RUN'],
         max_epochs=config.init['MAX_EPOCHS'],
         max_steps=config.init['MAX_STEPS'],
