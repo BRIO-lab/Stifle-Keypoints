@@ -125,10 +125,10 @@ class KeypointNetModule(pl.LightningModule):
 
     @nvtx.annotate("Test step", color="blue", domain="my_domain")
     def test_step(self, test_batch, batch_idx):
-        test_batch, test_batch_labels = test_batch['image'], test_batch['kp_label']
+        input_test_batch, test_batch_labels = test_batch['image'], test_batch['kp_label']          # 'input' here means the images inputted to the model, often with subset_pixel applied
         full_test_batch = test_batch['full_image']     # 'Full' here means the images without subset_pixel applied
         img_names = test_batch['img_name']
-        x = test_batch
+        x = input_test_batch
         test_output = self(x)
         loss = self.loss_fn(test_output, test_batch_labels)
 
@@ -136,10 +136,10 @@ class KeypointNetModule(pl.LightningModule):
         # Logging the predictions
         # Must remember that test_output is a tensor of shape (batch_size, 2 * num_keypoints)
         # And x is a tensor of shape (batch_size, 1, self.image_height, self.image_width)
-        data_set_name = 'naive_set' if self.config.datamodule['USE_NAIVE_TESTSET'] else 'test_set'
+        data_set_name = 'naive_set' if self.config.datamodule['USE_NAIVE_TEST_SET'] else 'test_set'
         fig_output_vector = plot_test_images(images=full_test_batch, preds=test_output, labels=test_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
-        fig_subsetted_output_vector = plot_test_images(images=test_batch, preds=test_output, labels=test_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
-        fig_input_vector = plot_inputs(images=full_test_batch, img_names=img_names, title='Input Image')
+        fig_subsetted_output_vector = plot_test_images(images=input_test_batch, preds=test_output, labels=test_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
+        fig_input_vector = plot_test_inputs(images=full_test_batch, img_names=img_names, title='Input Image')
 
         for i in range(len(fig_output_vector)):
             self.wandb_run.log({f'test/{data_set_name}/{img_names[i]}/full_output': fig_output_vector[i]})

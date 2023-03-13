@@ -155,6 +155,22 @@ def plot_test_images(images, preds, labels, img_names, num_keypoints, title='Ima
     plt.close()
     return output_image_vector
 
+def plot_test_inputs(images, img_names, title='Input Image'):
+    num_images = images.shape[0]
+    images = images.cpu()
+    output_image_vector = []
+    for i in range(0, num_images):
+        fig, ax = plt.subplots(1, 1, figsize=(10, 10), squeeze=False)
+        img = images[i].numpy()
+        img = np.transpose(img, (1, 2, 0))  # Transpose the output so that it's the same way as img
+        img = np.dstack((img, img, img))    # Make it 3 channels
+        ax[0][0].imshow((img * 255).astype(np.uint8))  # The multiplying by 255 and stuff is so it doesn't get clipped or something
+        image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
+        ax[0][0].set_title(title + ' {}'.format(image_name))
+        output_image_vector.append(fig)
+    plt.close()
+    return output_image_vector
+
 def run_metrics(output_image, label_image, image_threshold) -> dict:
     iou = iou_metric(output_image, label_image, image_threshold)
     tn = true_negative(output_image, label_image, image_threshold)
