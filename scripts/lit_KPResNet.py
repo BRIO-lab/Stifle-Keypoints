@@ -57,9 +57,9 @@ class KeypointNetModule(pl.LightningModule):
         self.my_dict["keypoints"] = nn.Sequential(
             nn.Linear(1000, 500),
             nn.ReLU(),
-            nn.Linear(500, 100),
+            nn.Linear(500, 250),
             nn.ReLU(),
-            nn.Linear(100, 2 * self.num_keypoints)
+            nn.Linear(250, 2 * self.num_keypoints)
         )
 
     def forward(self, x):
@@ -121,14 +121,14 @@ class KeypointNetModule(pl.LightningModule):
         """
 
         # Use plot_test_images to plot the images
-        fig_output_vector = plot_test_images(images=full_val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
-        fig_subsetted_output_vector = plot_test_images(images=val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
-        fig_intput_vector = plot_test_inputs(images=full_val_batch, img_names=img_names, title='Input Image')
+        fig_output_vector = plot_outputs(images=full_val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
+        fig_subsetted_output_vector = plot_outputs(images=val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
+        fig_intput_vector = plot_inputs(images=full_val_batch, img_names=img_names, title='Input Image')
 
         for i in range(len(fig_output_vector)):
-            self.wandb_run.log({f'validation/{img_names[i]}/full_output': fig_output_vector[i]})
-            self.wandb_run.log({f'validation/{img_names[i]}/subsetted_output': fig_subsetted_output_vector[i]})
-            self.wandb_run.log({f'validation/{img_names[i]}/input': fig_intput_vector[i]})
+            self.wandb_run.log({f'validation/{img_names[i]}/B{batch_idx}_full_output': fig_output_vector[i]})
+            self.wandb_run.log({f'validation/{img_names[i]}/B{batch_idx}_subsetted_output': fig_subsetted_output_vector[i]})
+            self.wandb_run.log({f'validation/{img_names[i]}/B{batch_idx}_input': fig_intput_vector[i]})
 
         return loss
 
@@ -148,9 +148,9 @@ class KeypointNetModule(pl.LightningModule):
         # Must remember that test_output is a tensor of shape (batch_size, 2 * num_keypoints)
         # And x is a tensor of shape (batch_size, 1, self.image_height, self.image_width)
         data_set_name = 'naive_set' if self.config.datamodule['USE_NAIVE_TEST_SET'] else 'test_set'
-        fig_output_vector = plot_test_images(images=full_test_batch, preds=test_output, labels=test_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
-        fig_subsetted_output_vector = plot_test_images(images=input_test_batch, preds=test_output, labels=test_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
-        fig_input_vector = plot_test_inputs(images=full_test_batch, img_names=img_names, title='Input Image')
+        fig_output_vector = plot_outputs(images=full_test_batch, preds=test_output, labels=test_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
+        fig_subsetted_output_vector = plot_outputs(images=input_test_batch, preds=test_output, labels=test_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
+        fig_input_vector = plot_inputs(images=full_test_batch, img_names=img_names, title='Input Image')
 
         for i in range(len(fig_output_vector)):
             self.wandb_run.log({f'test/{data_set_name}/{img_names[i]}/full_output': fig_output_vector[i]})
