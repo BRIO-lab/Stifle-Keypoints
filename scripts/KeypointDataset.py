@@ -93,9 +93,9 @@ class KeypointDataset(torch.utils.data.Dataset):
         seg_label = torch.FloatTensor(seg_label[None, :, :])
         #kp_label = torch.FloatTensor(kp_label.reshape(-1))      # Reshape to 1D array so that it's 2*num_keypoints long
         kp_label = torch.FloatTensor(kp_label)          # kp_label is of shape (num_keypoints, 2)
-        assert(kp_label.shape == (self.num_points, 2), "Keypoint label shape is incorrect!")
-        print("kp_label.shape:")
-        print(kp_label.shape)
+        assert kp_label.shape == (self.num_points, 2), "Keypoint label shape is incorrect!"
+        #print("kp_label.shape:")
+        #print(kp_label.shape)
 
 
     
@@ -105,7 +105,7 @@ class KeypointDataset(torch.utils.data.Dataset):
                     'kp_label': kp_label,
                     'seg_label': seg_label,
                     'full_image': full_image}
-        assert(self.transform is None, "Transforms not implemented yet!")
+        assert self.transform is None, "Transforms not implemented yet!"
         if self.transform and self.config.dataset['USE_ALBUMENTATIONS'] == True:
             sample = self.transform(sample)     # TODO: Implement transforms. Seems like we'll have to reshape the keypoints to be num_keypoints x 2 instead of 2*num_keypoints x 1
         return sample
