@@ -100,6 +100,7 @@ def plot_outputs(images, preds, labels, img_names, num_keypoints, title='Image')
     for i in range(0, num_images):
         fig, ax = plt.subplots(1, 1, figsize=(10, 10), squeeze=False)
 
+        # ! TODO: Is this the right way to do this? Is there something wrong here with offsets or something?
         preds[i][:, 0] = +1 * preds[i][:, 0] * 1024
         preds[i][:, 1] = -1 * preds[i][:, 1] * 1024 + 1024
         labels[i][:, 0] = +1 * labels[i][:, 0] * 1024
