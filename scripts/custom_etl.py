@@ -19,7 +19,7 @@ import csv
 # * Set the parameters
 #ROOT_DIR = os.getcwd()
 ROOT_DIR = '/home/sasank/Documents/GitRepos/Stifle-Keypoints/'
-RAW_DATA_FILE = os.path.join(ROOT_DIR, 'data', '64KP_data.csv')
+RAW_DATA_FILE = os.path.join(ROOT_DIR, 'data', 'raw_64KP_data.csv')
 ETL_NAME = 'Ten_Dogs_64KP'
 NAIVE_PATIENT_NUMBER = 10
 TEST_SIZE = 0.2
@@ -37,13 +37,20 @@ Write the 4 CSVs to the data/ETL_NAME directory
 raw_data = pd.read_csv(RAW_DATA_FILE)
 print('Raw data shape: ', raw_data.shape)
 
+# ! Remove Patient 3 Session 1 because the ground truth is wrong
+raw_data.drop(raw_data[(raw_data['Patient number'] == 3) & (raw_data['Session number'] == 1)].index, inplace=True)
+
+#raw_data = raw_data[raw_data['Patient number'] != 3 & raw_data['Session number'] != 1]
+#raw_data = raw_data[raw_data['Patient number'] != 3 and raw_data['Session number'] != 1]
+print(raw_data.shape)
+
 # * Remove the naive dataset
 naive_data = raw_data[raw_data['Patient number'] == NAIVE_PATIENT_NUMBER]
 raw_data = raw_data[raw_data['Patient number'] != NAIVE_PATIENT_NUMBER]
 
 # * Split the remaining data into train, val, and test
-train_data, test_data = tts(raw_data, test_size=TEST_SIZE, random_state=42)
-train_data, val_data = tts(train_data, test_size=VAL_SIZE, random_state=42)
+train_val_data, test_data = tts(raw_data, test_size=TEST_SIZE, random_state=42)
+train_data, val_data = tts(train_val_data, test_size=VAL_SIZE, random_state=42)
 
 # * Make sure the folder exists
 if not os.path.exists(os.path.join(ROOT_DIR, 'data', ETL_NAME)):
