@@ -118,7 +118,7 @@ def plot_outputs(images, preds, labels, img_names, num_keypoints, title='Image')
         image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
         ax[0][0].set_title(title + ' {}'.format(image_name))
         output_image_vector.append(fig)
-    plt.close()
+        plt.close()
     return output_image_vector
 
 def plot_inputs(images, img_names, title='Input Image'):
@@ -134,7 +134,7 @@ def plot_inputs(images, img_names, title='Input Image'):
         image_name = img_names[i].split('/')[-1]    # Format img_names[i] so that only the part after the last '/' is shown
         ax[0][0].set_title(title + ' {}'.format(image_name))
         output_image_vector.append(fig)
-    plt.close()
+        plt.close()
     return output_image_vector
 
 def run_metrics(output_image, label_image, image_threshold) -> dict:
