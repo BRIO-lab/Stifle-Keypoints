@@ -9,6 +9,7 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 import wandb
 import math
 from utility import run_metrics
+import pandas as pd
 
 class JTMLCallback(Callback):
     def __init__(self, config, wandb_run) -> None:
@@ -169,9 +170,14 @@ class JTMLCallback(Callback):
         return super().on_test_end(trainer, pl_module)
 
     def on_test_epoch_start(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
+        #WRITE_CSV = '/home/sasank/Documents/GitRepos/PnP-Solver/kp_estimates/naive_Ten_Dogs_64KP_estimates_pr.csv'
+        #self.csv_file = pd.read_csv(WRITE_CSV)
         return super().on_test_epoch_start(trainer, pl_module)
 
     def on_test_epoch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
+        # Close the CSV file
+        #pl_module.csv_file.to_csv('/home/sasank/Documents/GitRepos/PnP-Solver/kp_estimates/naive_Ten_Dogs_64KP_estimates_pr.csv', index=True)
+        #self.csv_file.close()
         print(20 * '*' + f'Finished test epoch {pl_module.current_epoch}!' + 20 * '*')
         return super().on_test_epoch_end(trainer, pl_module)
 
@@ -181,6 +187,56 @@ class JTMLCallback(Callback):
     def on_test_batch_start(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", batch, batch_idx: int) -> None:
         return super().on_test_batch_start(trainer, pl_module, batch, batch_idx)
     """
+
+    def on_test_batch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs, batch, batch_idx: int, dataloader_idx) -> None:
+        #for i in range(len(outputs)):
+            # We will plot the outputs, which are 2D keypoints, to self.csv_file in the row that corresponds to the image name
+            """
+            keypoints = outputs[i].detach().cpu().numpy()
+            keypoints.view(64,2)
+            img_name = batch['img_name'][i]
+
+            # Find the row that corresponds to the image name
+            self.csv_file.loc[self.csv_file['Image Name'] == img_name]['Femur PR KP points'] = keypoints
+            #self.csv_file['Femur PR KP points']
+            """
+
+
+            """
+            img_name = batch['img_name'][i]
+            input_image = batch['image'][i][0]
+            label_image = batch['label'][i][0]
+            output_image = outputs[i][0]
+
+            # Inputs
+            wandb_input = wandb.Image(input_image, caption=img_name)
+            self.wandb_run.log({'test/input_image': wandb_input})
+            
+            # Labels
+            wandb_label = wandb.Image(label_image, caption=img_name)
+            self.wandb_run.log({'test/input_label': wandb_label})
+            
+            # Predictions
+            wandb_output = wandb.Image(output_image, caption=img_name)
+            self.wandb_run.log({'test/output_image': wandb_output})
+            
+            # Overlay Image
+            self.wandb_run.log(
+                {'test/overlay': wandb.Image(input_image,
+                caption=img_name,
+                masks={
+                    'predictions': {
+                        'mask_data': output_image.detach().cpu().numpy(),
+                        'class_labels': self.class_labels
+                    },
+                    'ground_truth': {
+                        # the mask_data here is actually on CPU since it needs to be numpy which is only on CPU
+                        'mask_data': label_image.detach().cpu().numpy(),
+                        'class_labels': self.class_labels
+                    }
+                })}
+            )
+            """
 
     # TODO: Fix for Stifle Keypoints (128 channel images and such...)
     def BAD_on_test_batch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs, batch, batch_idx: int, dataloader_idx) -> None:

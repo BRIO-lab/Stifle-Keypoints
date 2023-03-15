@@ -5,6 +5,7 @@ scripts/__pycache__/
 scripts/__pycache__/*
 config/__pycache__/*
 */__pycache__/*
+scripts/__pycache__/KeypointDataset.cpython-310.pyc
 
 *.ckpt
 checkpoints/*
