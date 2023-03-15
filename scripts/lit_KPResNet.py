@@ -31,6 +31,9 @@ class KeypointNetModule(pl.LightningModule):
             gaussian_sigma=self.config.dataset['GAUSSIAN_STDDEV']
             )
 
+        # ! Good grief what a hack. This is only for local testing.
+        #WRITE_CSV = '/home/sasank/Documents/GitRepos/PnP-Solver/kp_estimates/naive_Ten_Dogs_64KP_estimates_pr.csv'
+        #self.csv_file = pd.read_csv(WRITE_CSV)
         
         self.in_channels = self.config.dataset['IMG_CHANNELS']
         self.num_keypoints = self.config.dataset['NUM_KEY_POINTS']
@@ -143,6 +146,19 @@ class KeypointNetModule(pl.LightningModule):
         test_output = self(x)
         loss = self.loss_fn(test_output, test_batch_labels)
 
+        """
+        for i in range(len(test_output)):
+            # We will plot the outputs, which are 2D keypoints, to self.csv_file in the row that corresponds to the image name
+            keypoints = test_output[i].detach().cpu().numpy()
+            # Make the keypoints a 2D array of shape (num_keypoints, 2)
+            keypoints = keypoints.reshape(self.num_keypoints, 2)
+            #keypoints.view(64,2)
+            img_name = img_names[i]
+
+            # Find the row that corresponds to the image name
+            #self.csv_file.loc[self.csv_file['Image address'] == img_name]['Femur PR KP points'] = str(keypoints)
+            self.csv_file.loc[self.csv_file['Image address'] == img_name, 'Femur PR KP points'] = str(keypoints)
+        """
 
         # Logging the predictions
         # Must remember that test_output is a tensor of shape (batch_size, 2 * num_keypoints)

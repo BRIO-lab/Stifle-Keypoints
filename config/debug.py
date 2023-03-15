@@ -22,7 +22,7 @@ class Configuration:
             'MODEL_NAME': 'Fem_64KP',
             'RUN_NAME': time.strftime('%Y-%m-%d-%H-%M-%S'),
             'WANDB_RUN_GROUP': 'Local',
-            'FAST_DEV_RUN': False,  # Runs inputted batches (True->1) and disables logging and some callbacks
+            'FAST_DEV_RUN': True,  # Runs inputted batches (True->1) and disables logging and some callbacks
             'MAX_EPOCHS': 10,
             'MAX_STEPS': -1,    # -1 means it will do all steps and be limited by epochs
             'STRATEGY': None    # This is the training strategy. Should be 'ddp' for multi-GPU (like HPG)
@@ -104,8 +104,8 @@ class Configuration:
             'learning_rate': 1e-3
         }
 
-        #self.transform = None
-        self.transform = \
+        self.transform = None
+        #self.transform = \
         A.Compose([
             # Let's do only rigid transformations for now
             A.HorizontalFlip(p=0.9),
