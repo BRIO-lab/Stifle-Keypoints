@@ -45,9 +45,15 @@ class KeypointDataset(torch.utils.data.Dataset):
 
         # Load the data from the big_data CSV file into a pandas dataframe
         self.data = pd.read_csv(os.path.join(self.config.etl['DATA_DIR'], self.config.dataset['DATA_NAME'], self.evaluation_type + '_' + self.config.dataset['DATA_NAME'] + '.csv'))
+        # Print number of rows in the dataframe
+        print('Number of rows in the dataframe: ', len(self.data))
+        # Print 'Image address' of the first row
+        print('Image address of the first row: ', self.data.iloc[0]['Image address'])
+        # Print 'Image address' of the last row
+        print('Image address of the last row: ', self.data.iloc[-1]['Image address'])
 
     def __len__(self):
-        return len(self.data) - 1   # Subtract 1 because the first row is the column names
+        return len(self.data)
     
     def __getitem__(self, idx):
         # Get the row of the dataframe
