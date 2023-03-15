@@ -48,7 +48,9 @@ class KeypointNetModule(pl.LightningModule):
         
         #self.my_dict["resnet"] = make_resnet(3, 64, 3, 1)
         # this 
-        self.my_dict["resnet"] = torchvision.models.resnet34(weights='IMAGENET1K_V1')
+        #self.my_dict["resnet"] = torchvision.models.resnet34(weights='IMAGENET1K_V1')
+        # ! Trying out Resnet152 to see if it improves model output
+        self.my_dict["resnet"] = torchvision.models.resnet152(weights='IMAGENET1K_V2')
 
         #assert self.num_keypoints <= 50, "If num_keypoints > 50, the last linear layer is growing bigger, which seems unreasonable."
         # The above assertion does not need to be made because it could be that the model is just finding a lower-dimensional representation of the keypoints, which, if accurate, would be a good thing.
@@ -121,6 +123,8 @@ class KeypointNetModule(pl.LightningModule):
         """
 
         # Use plot_test_images to plot the images
+        # ! Disabling val plotting for now to see how the models do
+        """
         fig_output_vector = plot_outputs(images=full_val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
         fig_subsetted_output_vector = plot_outputs(images=val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
         fig_intput_vector = plot_inputs(images=full_val_batch, img_names=img_names, title='Input Image')
@@ -129,6 +133,7 @@ class KeypointNetModule(pl.LightningModule):
             self.wandb_run.log({f'validation/{img_names[i]}/E{self.current_epoch}_full_output': fig_output_vector[i]})
             self.wandb_run.log({f'validation/{img_names[i]}/E{self.current_epoch}_subsetted_output': fig_subsetted_output_vector[i]})
             self.wandb_run.log({f'validation/{img_names[i]}/E{self.current_epoch}_input': fig_intput_vector[i]})
+        """
 
         return loss
 
