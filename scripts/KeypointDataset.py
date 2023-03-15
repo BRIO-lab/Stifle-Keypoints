@@ -50,8 +50,6 @@ class KeypointDataset(torch.utils.data.Dataset):
         return len(self.data) - 1   # Subtract 1 because the first row is the column names
     
     def __getitem__(self, idx):
-        idx += 1    # Add 1 because the first row is the column names
-
         # Get the row of the dataframe
         row = self.data.iloc[idx]
 
