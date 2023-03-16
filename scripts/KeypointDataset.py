@@ -46,11 +46,11 @@ class KeypointDataset(torch.utils.data.Dataset):
         # Load the data from the big_data CSV file into a pandas dataframe
         self.data = pd.read_csv(os.path.join(self.config.etl['DATA_DIR'], self.config.dataset['DATA_NAME'], self.evaluation_type + '_' + self.config.dataset['DATA_NAME'] + '.csv'))
         # Print number of rows in the dataframe
-        print('Number of rows in the dataframe: ', len(self.data))
+        #print('Number of rows in the dataframe: ', len(self.data))
         # Print 'Image address' of the first row
-        print('Image address of the first row: ', self.data.iloc[0]['Image address'])
+        #print('Image address of the first row: ', self.data.iloc[0]['Image address'])
         # Print 'Image address' of the last row
-        print('Image address of the last row: ', self.data.iloc[-1]['Image address'])
+        #print('Image address of the last row: ', self.data.iloc[-1]['Image address'])
 
     def __len__(self):
         return len(self.data)
@@ -64,7 +64,6 @@ class KeypointDataset(torch.utils.data.Dataset):
 
         # Get the image
         image = io.imread(os.path.join(self.config.datamodule['IMAGE_DIRECTORY'], image_name))
-        full_image = image             # Save full image (no subset_pixels) for visualization
 
         # Get the keypoint labels and segmentation labels
         if self.config.dataset['MODEL_TYPE'] == 'fem':
@@ -81,7 +80,16 @@ class KeypointDataset(torch.utils.data.Dataset):
         kp_label = [np.array([float(x) for x in list(filter(None, kp.split(' ')))]) for kp in kp_label]
         kp_label = np.array(kp_label)
         
+
+        # * Transformations
+        # Albumenations
+        image_no_transform = image
+        if self.transform and self.config.dataset['USE_ALBUMENTATIONS'] == True:
+            transformed = self.transform(image=image, mask=seg_label, keypoints=kp_label)
+            image, seg_label, kp_label = transformed['image'], transformed['mask'], transformed['keypoints']
+
         # * Subset Pixels
+        full_image = image             # Save full image (no subset_pixels) for visualization
         if self.config.dataset['SUBSET_PIXELS'] == True:
             label_dst = np.zeros_like(seg_label)
             label_normed = cv2.normalize(seg_label, label_dst, alpha = 0, beta = 1, norm_type = cv2.NORM_MINMAX)
@@ -92,7 +100,8 @@ class KeypointDataset(torch.utils.data.Dataset):
             image_subsetted = cv2.multiply(label_dilated, image)
             image = image_subsetted
 
-        image = torch.FloatTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
+        # * Convert to tensors
+        image = torch.FloatTensor(image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__. - What. What does this mean?
         full_image = torch.FloatTensor(full_image[None, :, :]) # Store as byte (to save space) then convert when called in __getitem__
         seg_label = torch.FloatTensor(seg_label[None, :, :])
         #kp_label = torch.FloatTensor(kp_label.reshape(-1))      # Reshape to 1D array so that it's 2*num_keypoints long
@@ -101,15 +110,13 @@ class KeypointDataset(torch.utils.data.Dataset):
         #print("kp_label.shape:")
         #print(kp_label.shape)
 
-
-    
-        # Form sample and transform if necessary
+        # * Create a dictionary of the sample
         sample = {'image': image,
                     'img_name': image_name,
                     'kp_label': kp_label,
                     'seg_label': seg_label,
-                    'full_image': full_image}
-        assert self.transform is None, "Transforms not implemented yet!"
-        if self.transform and self.config.dataset['USE_ALBUMENTATIONS'] == True:
-            sample = self.transform(sample)     # TODO: Implement transforms. Seems like we'll have to reshape the keypoints to be num_keypoints x 2 instead of 2*num_keypoints x 1
+                    'full_image': full_image,
+                    'image_no_transform': image_no_transform}
+
+        # * Return the sample
         return sample

@@ -87,7 +87,8 @@ def plot_outputs(images, preds, labels, img_names, num_keypoints, title='Image')
     """
 
     num_images = images.shape[0]
-    preds = preds.view(num_images, num_keypoints, 2)
+    #preds = preds.view(num_images, num_keypoints, 2)       # We changed the module forward method so that it outputs a tensor of shape (batch_size, num_keypoints, 2)
+    assert preds.shape[1] == num_keypoints, "The number of keypoints in the prediction tensor does not match the number of keypoints in the config file"
 
     images = images.cpu()
     preds = preds.cpu()

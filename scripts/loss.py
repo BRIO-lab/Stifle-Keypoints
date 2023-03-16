@@ -95,9 +95,10 @@ class res_kp_loss(torch.nn.Module):
         num_keypoints = target.shape[1]     # Since the output is 2 * num_keypoints per batch.
         raw_batch_loss = 0
 
-        # The model output is 2 * num_keypoints, so we reshape it to (num_keypoint,2)
-        # so that it looks just like the target.
-        output = output.view(batch_size, num_keypoints, 2)
+        # The model output is (num_keypoint,2) since we changed the module forward method on 3/16/23
+        assert output.shape[1] == num_keypoints, 'output.shape[1] is ' + str(output.shape[1]) + ' but num_keypoints is ' + str(num_keypoints)
+        assert output.shape[2] == 2, 'output.shape[2] is ' + str(output.shape[2]) + ' but should be 2'
+        #output = output.view(batch_size, num_keypoints, 2)
         #print("output shape: " + str(output.shape))
         #print("target shape: " + str(target.shape))
         #print("output shape: " + str(output.shape))
@@ -113,6 +114,7 @@ class res_kp_loss(torch.nn.Module):
         avg_loss = raw_batch_loss / batch_size
         return avg_loss
     
+    # ? Should we use the built-in MSE loss function here?
     def mse(self, pred, target):
         #print("pred: " + str(pred))
         #print("target: " + str(target))

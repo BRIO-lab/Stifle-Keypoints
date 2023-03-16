@@ -79,7 +79,10 @@ class KeypointNetModule(pl.LightningModule):
         x = self.my_dict["pre_block"](x)
         x = self.my_dict["resnet"](x)
         x = self.my_dict["keypoints"](x)
-        return x
+
+        # Reshape keypoints to be (batch_size, num_keypoints, 2)
+        keypoints = x.view(-1, self.num_keypoints, 2)
+        return keypoints
 
     def configure_optimizers(self):
         #optimizer = torch.optim.Adam(self.parameters, lr=1e-3)
