@@ -130,16 +130,16 @@ class KeypointNetModule(pl.LightningModule):
 
         # Use plot_test_images to plot the images
         # ! Disabling val plotting for now to see how the models do
-        """
-        fig_output_vector = plot_outputs(images=full_val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
-        fig_subsetted_output_vector = plot_outputs(images=val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
-        fig_intput_vector = plot_inputs(images=full_val_batch, img_names=img_names, title='Input Image')
+        # Do this block if epoch is divisible by 20
+        if self.current_epoch % 20 == 0:
+            fig_output_vector = plot_outputs(images=full_val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Unsubsetted Image')
+            fig_subsetted_output_vector = plot_outputs(images=val_batch, preds=val_output, labels=val_batch_labels, img_names=img_names, num_keypoints=self.num_keypoints, title='Model View')
+            fig_intput_vector = plot_inputs(images=full_val_batch, img_names=img_names, title='Input Image')
 
-        for i in range(len(fig_output_vector)):
-            self.wandb_run.log({f'validation/{img_names[i]}/E{self.current_epoch}_full_output': fig_output_vector[i]})
-            self.wandb_run.log({f'validation/{img_names[i]}/E{self.current_epoch}_subsetted_output': fig_subsetted_output_vector[i]})
-            self.wandb_run.log({f'validation/{img_names[i]}/E{self.current_epoch}_input': fig_intput_vector[i]})
-        """
+            for i in range(len(fig_output_vector)):
+                self.wandb_run.log({f'validation/{img_names[i]}/E{self.current_epoch}_full_output': fig_output_vector[i]})
+                self.wandb_run.log({f'validation/{img_names[i]}/E{self.current_epoch}_subsetted_output': fig_subsetted_output_vector[i]})
+                self.wandb_run.log({f'validation/{img_names[i]}/E{self.current_epoch}_input': fig_intput_vector[i]})
 
         return loss
 
