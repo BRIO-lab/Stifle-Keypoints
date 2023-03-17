@@ -79,6 +79,8 @@ class KeypointDataset(torch.utils.data.Dataset):
         kp_label = kp_label.split(']\n [')
         kp_label = [np.array([float(x) for x in list(filter(None, kp.split(' ')))]) for kp in kp_label]
         kp_label = np.array(kp_label)
+        kp_label[:, 1] = 1 - kp_label[:, 1]         # ! New kp_label preprocessing
+        kp_label = kp_label * 1024
         
 
         # * Transformations
