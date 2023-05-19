@@ -75,13 +75,14 @@ class KeypointDataset(torch.utils.data.Dataset):
         else:
             raise Exception('Incorrect model type! Must be either \'fem\' or \'tib\'.')
 
+        # * KP Label Preprocessing
         kp_label = kp_label[2:-2]
         kp_label = kp_label.split(']\n [')
         kp_label = [np.array([float(x) for x in list(filter(None, kp.split(' ')))]) for kp in kp_label]
         kp_label = np.array(kp_label)
         kp_label[:, 1] = 1 - kp_label[:, 1]         # ! New kp_label preprocessing
         kp_label = kp_label * 1024
-        
+        kp_label = kp_label + np.array([row['X offset'], row['Y offset']])*row['Scale']
 
         # * Transformations
         # Albumenations

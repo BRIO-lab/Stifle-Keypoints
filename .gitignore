@@ -7,6 +7,7 @@ config/__pycache__/*
 */__pycache__/*
 scripts/__pycache__/KeypointDataset.cpython-310.pyc
 scripts/__pycache__/KeypointDataset.cpython-310.pyc
+*.onnx
 
 *.ckpt
 checkpoints/*
