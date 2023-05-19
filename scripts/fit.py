@@ -11,6 +11,7 @@ import torch
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.accelerators import find_usable_cuda_devices
 #from kp_pose_hrnet_module import KeypointNetModule
 from lit_KPResNet import KeypointNetModule
 from datamodule import KeypointDataModule
@@ -49,8 +50,9 @@ def main(config, wandb_run):
 
     # Our trainer object contains a lot of important info.
     trainer = pl.Trainer(
-        accelerator='gpu',
-        devices=-1,     # use all available devices (GPUs)
+        accelerator='cuda',
+        devices=find_usable_cuda_devices(-1),
+        #devices=-1,     # use all available devices (GPUs)
         auto_select_gpus=True,  # helps use all GPUs, not quite understood...
         #logger=wandb_logger,   # tried to use a WandbLogger object. Hasn't worked...
         default_root_dir=os.getcwd(),
