@@ -107,6 +107,11 @@ if __name__ == '__main__':
         #save_dir='/logs/'
     )
 
+    if config.init['WANDB_RUN_GROUP'] == 'HiPerGator':
+        torch.set_float32_matmul_precision('high')
+
+    torch.multiprocessing.set_sharing_strategy('file_system')
+
     main(config, wandb_run)
 
     # Sync and close the Wandb logging. Good to have for DDP, I believe.

@@ -11,6 +11,7 @@ import torch
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.accelerators import find_usable_cuda_devices
 #from kp_pose_hrnet_module import KeypointNetModule, PoseHighResolutionNet
 from lit_KPResNet import KeypointNetModule
 from datamodule import KeypointDataModule
