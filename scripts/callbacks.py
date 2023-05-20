@@ -188,7 +188,7 @@ class JTMLCallback(Callback):
         return super().on_test_batch_start(trainer, pl_module, batch, batch_idx)
     """
 
-    def on_test_batch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs, batch, batch_idx: int, dataloader_idx) -> None:
+    def alsoBAD_on_test_batch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs, batch, batch_idx: int, dataloader_idx: int) -> None:
         #for i in range(len(outputs)):
             # We will plot the outputs, which are 2D keypoints, to self.csv_file in the row that corresponds to the image name
             """

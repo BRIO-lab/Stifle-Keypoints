@@ -102,10 +102,10 @@ def plot_outputs(images, preds, labels, img_names, num_keypoints, title='Image')
         fig, ax = plt.subplots(1, 1, figsize=(10, 10), squeeze=False)
 
         # ! TODO: Is this the right way to do this? Is there something wrong here with offsets or something?
-        preds[i][:, 0] = +1 * preds[i][:, 0] * 1024
-        preds[i][:, 1] = -1 * preds[i][:, 1] * 1024 + 1024
-        labels[i][:, 0] = +1 * labels[i][:, 0] * 1024
-        labels[i][:, 1] = -1 * labels[i][:, 1] * 1024 + 1024
+        #preds[i][:, 0] = +1 * preds[i][:, 0] * 1024
+        #preds[i][:, 1] = -1 * preds[i][:, 1] * 1024 + 1024
+        #labels[i][:, 0] = +1 * labels[i][:, 0] * 1024
+        #labels[i][:, 1] = -1 * labels[i][:, 1] * 1024 + 1024
         # Do some stuff so that img is shown correctly
         img = images[i].numpy()
         img = np.transpose(img, (1, 2, 0))  # Transpose the output so that it's the same way as img

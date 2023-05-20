@@ -12,3 +12,4 @@ scripts/__pycache__/KeypointDataset.cpython-310.pyc
 *.ckpt
 checkpoints/*
 wandb/*
+lightning_logs/*
