@@ -52,8 +52,9 @@ def main(config, wandb_run):
     trainer = pl.Trainer(
         accelerator='cuda',
         devices=find_usable_cuda_devices(-1),
+        precision='16-mixed',
         #devices=-1,     # use all available devices (GPUs)
-        auto_select_gpus=True,  # helps use all GPUs, not quite understood...
+        #auto_select_gpus=True,  # helps use all GPUs, not quite understood...
         #logger=wandb_logger,   # tried to use a WandbLogger object. Hasn't worked...
         default_root_dir=os.getcwd(),
         callbacks=[JTMLCallback(config, wandb_run)],    # pass in the callbacks we want

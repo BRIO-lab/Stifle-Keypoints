@@ -58,9 +58,12 @@ def main(config, wandb_run):
     """
 
     # Our trainer object contains a lot of important info.
-    trainer = pl.Trainer(accelerator='gpu',
-        devices=1,              # It is recommended to use devices=1 since distributed strategies use `DistributedSampler` internally.
-        auto_select_gpus=True,  # helps use all GPUs, not quite understood...
+    trainer = pl.Trainer(
+        accelerator='cuda',
+        devices=find_usable_cuda_devices(-1),
+        precision='16-mixed',
+        #devices=1,              # It is recommended to use devices=1 since distributed strategies use `DistributedSampler` internally.
+        #auto_select_gpus=True,  # helps use all GPUs, not quite understood...
         #logger=wandb_logger,
         default_root_dir=os.getcwd(),
         callbacks=[JTMLCallback(config, wandb_run)],    # pass in the callbacks we want
