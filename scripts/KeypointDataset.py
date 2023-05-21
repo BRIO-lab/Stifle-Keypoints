@@ -13,6 +13,7 @@ import pandas as pd
 import os
 from skimage import io
 import cv2
+import random
 
 import pytorch_lightning as pl
 import wandb
@@ -98,7 +99,10 @@ class KeypointDataset(torch.utils.data.Dataset):
             label_normed = cv2.normalize(seg_label, label_dst, alpha = 0, beta = 1, norm_type = cv2.NORM_MINMAX)
             seg_label = label_normed
 
-            kernel = np.ones((30,30), np.uint8)
+            # Make a set of kernels and choose one at random. This is to prevent the model from learning the size of the kernel.
+            kernel_set = [(10,10), (20,20), (30,30), (40,40), (50,50), (60,60)]
+            kernel = np.ones(random.choice(kernel_set), np.uint8)
+            #kernel = np.ones((30,30), np.uint8)
             label_dilated = cv2.dilate(seg_label, kernel, iterations = 5)
             image_subsetted = cv2.multiply(label_dilated, image)
             image = image_subsetted

@@ -12,7 +12,7 @@ class Configuration:
     def __init__(self):
         self.init = {
             'PROJECT_NAME': 'Keypoint Estimation',
-            'MODEL_NAME': 'Fem_64KP',
+            'MODEL_NAME': 'ISTA',
             'RUN_NAME': time.strftime('%Y-%m-%d-%H-%M-%S'),
             'WANDB_RUN_GROUP': 'Local',
             'FAST_DEV_RUN': False,  # Runs inputted batches (True->1) and disables logging and some callbacks
@@ -41,7 +41,7 @@ class Configuration:
             'SUBSET_PIXELS': True,
             'IMAGE_HEIGHT': 1024,
             'IMAGE_WIDTH': 1024,
-            'MODEL_TYPE': 'fem',        # how should we do this? not clear this is still best...
+            'MODEL_TYPE': 'tib',        # how should we do this? not clear this is still best...
             'CLASS_LABELS': {0: 'bone', 1: 'background'},
             'NUM_KEY_POINTS': 64,
             'IMG_CHANNELS': 1,      # Is this different from self.module['NUM_IMAGE_CHANNELS']
@@ -82,8 +82,8 @@ class Configuration:
         self.datamodule = {
             'IMAGE_DIRECTORY': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids/',
             #'CKPT_FILE': '~/Documents/GitRepos/Stifle-Keypoints/checkpoints/Tib64_200Epochs.ckpt',
-            'CKPT_FILE': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/Stifle-Keypoint-checkpoints/FemISTA200.ckpt',
-            'USE_NAIVE_TEST_SET': True,
+            'CKPT_FILE': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/Stifle-Keypoint-checkpoints/TibISTA_noAlb.ckpt',
+            'USE_NAIVE_TEST_SET': False,
             'BATCH_SIZE': 1,
             'SHUFFLE': True,        # Only for training; for test and val this is set in the datamodule script to False
             'NUM_WORKERS': 2,

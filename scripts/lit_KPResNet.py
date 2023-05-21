@@ -187,28 +187,3 @@ class KeypointNetModule(pl.LightningModule):
 
         return loss
     
-
-
-
-
-    #def on_test_batch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule", outputs, batch, batch_idx: int, dataloader_idx) -> None:
-    """
-    def on_test_batch_end(self, outputs, batch, batch_idx: int, dataloader_idx, **kwargs) -> None:
-        print(outputs.size())
-        for image in outputs:
-            image = self.wandb.Image(image, caption='Test output from batch ' + str(batch_idx))
-            self.wandb_run.log({'test_output': image})
-        #return super().on_test_batch_end(trainer, pl_module, batch, batch_idx)
-        #return super().on_test_batch_end(batch, batch_idx)
-    """
-
-"""
-    def train_dataloader(self):
-        return
-
-    def val_dataloader(self):
-        return
-"""
-
-    # def backward():
-    # def optimizer_step():
