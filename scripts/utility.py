@@ -93,8 +93,10 @@ def plot_outputs(images, preds, labels, img_names, num_keypoints, title='Image')
     images = images.cpu()
     preds = preds.cpu()
     preds = np.array(preds, dtype=np.float64)
+    preds = preds * 1024
     labels = labels.cpu()
     labels = labels.numpy()
+    labels = labels * 1024
 
     output_image_vector = []
 
