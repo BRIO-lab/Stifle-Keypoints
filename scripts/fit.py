@@ -39,6 +39,8 @@ def main(config, wandb_run):
     # Since we are using an architecure written in PyTorch (PoseHRNet), we feed that architecture in.
     # We also pass our wandb_run object to we can log.
     model = KeypointNetModule(config=config, wandb_run=wandb_run) # I can put some data module stuff in this argument if I want
+    if config.hparams['LOAD_FROM_CHECKPOINT'] is not None:
+        model = KeypointNetModule.load_from_checkpoint(config.datamodule['CKPT_FILE'], config=config, wandb_run=wandb_run)     # Starting from checkpoint
     #model = KeypointNetModule.load_from_checkpoint(config.datamodule['CKPT_FILE'], config=config, wandb_run=wandb_run)     # Starting from checkpoint
 
     # This is a callback that should help us with stopping validation when it's time but isn't working.
