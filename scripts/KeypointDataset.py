@@ -83,7 +83,7 @@ class KeypointDataset(torch.utils.data.Dataset):
         kp_label = np.array(kp_label)
         kp_label[:, 1] = 1 - kp_label[:, 1]         # ! New kp_label preprocessing
         kp_label = kp_label * 1024
-        kp_label = kp_label + np.array([row['X offset'], row['Y offset']])*row['Scale']
+        #kp_label = kp_label + np.array([row['X offset'], row['Y offset']])*row['Scale'] # Doggy doodoo booboo code where I include the offset even though StudyToGrid already does it when generating the .txt files
 
         # * Transformations
         # Albumenations
