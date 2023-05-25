@@ -8,7 +8,8 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-
+from monai.networks.nets import SwinUNETR
+from kornia.geometry.subpix import SpatialSoftArgmax2d
 import pytorch_lightning as pl
 import wandb
 
@@ -52,8 +53,8 @@ class KeypointNetModule(pl.LightningModule):
         #self.my_dict["resnet"] = make_resnet(3, 64, 3, 1)
         # this 
         #self.my_dict["resnet"] = torchvision.models.resnet34(weights='IMAGENET1K_V1')
-        # ! Trying out Resnet152 to see if it improves model output
-        self.my_dict["resnet"] = torchvision.models.resnet152(weights='IMAGENET1K_V2')
+        # ! Disabling this for now to try SwinUNETR
+        #self.my_dict["resnet"] = torchvision.models.resnet152(weights='IMAGENET1K_V2')
 
         #assert self.num_keypoints <= 50, "If num_keypoints > 50, the last linear layer is growing bigger, which seems unreasonable."
         # The above assertion does not need to be made because it could be that the model is just finding a lower-dimensional representation of the keypoints, which, if accurate, would be a good thing.
@@ -67,6 +68,25 @@ class KeypointNetModule(pl.LightningModule):
             nn.Linear(250, 2 * self.num_keypoints)
         )
 
+        
+        swinunetr = SwinUNETR(
+            img_size=(self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']),
+            in_channels=self.config.dataset['IMG_CHANNELS'],
+            out_channels=self.config.dataset['NUM_KEY_POINTS'],
+            spatial_dims=2
+        )
+
+        kornia_spatial_soft_argmax = SpatialSoftArgmax2d(temperature=torch.tensor(1.0), normalized_coordinates=False)
+
+        self.my_dict["swinunetr_pipeline"] = nn.Sequential(
+            swinunetr,
+            kornia_spatial_soft_argmax
+        )
+        
+
+        
+        
+
     def forward(self, x):
         """This performs a forward pass on the dataset.
 
@@ -76,12 +96,19 @@ class KeypointNetModule(pl.LightningModule):
         Returns:
             the forward pass of the dataset.
         """
+        """
         x = self.my_dict["pre_block"](x)
         x = self.my_dict["resnet"](x)
         x = self.my_dict["keypoints"](x)
+        """
+
+        x = self.my_dict["swinunetr_pipeline"](x)
+
+        print("x shape: " + str(x.shape))     # testing line
 
         # Reshape keypoints to be (batch_size, num_keypoints, 2)
         keypoints = x.view(-1, self.num_keypoints, 2)
+        print("keypoints shape: " + str(keypoints.shape))
         return keypoints
 
     def configure_optimizers(self):

@@ -15,7 +15,7 @@ class Configuration:
             'MODEL_NAME': 'ISTA',
             'RUN_NAME': time.strftime('%Y-%m-%d-%H-%M-%S'),
             'WANDB_RUN_GROUP': 'Local',
-            'FAST_DEV_RUN': False,  # Runs inputted batches (True->1) and disables logging and some callbacks
+            'FAST_DEV_RUN': True,  # Runs inputted batches (True->1) and disables logging and some callbacks
             'MAX_EPOCHS': 1,
             'MAX_STEPS': 10,    # -1 means it will do all steps and be limited by epochs
             'STRATEGY': 'auto'    # This is the training strategy. Should be 'ddp' for multi-GPU (like HPG)
@@ -82,7 +82,7 @@ class Configuration:
         self.datamodule = {
             'IMAGE_DIRECTORY': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids/',
             #'CKPT_FILE': '~/Documents/GitRepos/Stifle-Keypoints/checkpoints/Tib64_200Epochs.ckpt',
-            'CKPT_FILE': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/Stifle-Keypoint-checkpoints/FemTemp.ckpt',
+            'CKPT_FILE': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/Stifle-Keypoint-checkpoints/FemISTA128_noAlb.ckpt',
             'USE_NAIVE_TEST_SET': False,
             'BATCH_SIZE': 1,
             'SHUFFLE': True,        # Only for training; for test and val this is set in the datamodule script to False
@@ -108,4 +108,4 @@ class Configuration:
             A.Transpose(p=0.2),
         ],
         keypoint_params=A.KeypointParams(format='xy', remove_invisible=False),
-        p=1.0)
+        p=0.0)
