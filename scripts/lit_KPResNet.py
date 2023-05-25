@@ -44,25 +44,22 @@ class KeypointNetModule(pl.LightningModule):
 
         self.my_dict = nn.ModuleDict({})
 
-        """
         self.my_dict["pre_block"] = nn.Sequential(
             nn.Conv2d(self.in_channels, 3, kernel_size=1, stride=1, padding=0, bias=False),     # This is just to convert the input channels to 3, which is what the resnet expects.
             nn.BatchNorm2d(3),
             nn.ReLU()
         )
-        """
         
         #self.my_dict["resnet"] = make_resnet(3, 64, 3, 1)
         # this 
         #self.my_dict["resnet"] = torchvision.models.resnet34(weights='IMAGENET1K_V1')
         # ! Disabling this for now to try SwinUNETR
-        #self.my_dict["resnet"] = torchvision.models.resnet152(weights='IMAGENET1K_V2')
+        self.my_dict["resnet"] = torchvision.models.resnet152(weights='IMAGENET1K_V2')
 
         #assert self.num_keypoints <= 50, "If num_keypoints > 50, the last linear layer is growing bigger, which seems unreasonable."
         # The above assertion does not need to be made because it could be that the model is just finding a lower-dimensional representation of the keypoints, which, if accurate, would be a good thing.
         # ! If model performance is bad is bad when using 64 keypoints, then it may be a good idea to reexamine this.
 
-        """
         self.my_dict["keypoints"] = nn.Sequential(
             nn.Linear(1000, 500),
             nn.ReLU(),
@@ -70,9 +67,8 @@ class KeypointNetModule(pl.LightningModule):
             nn.ReLU(),
             nn.Linear(250, 2 * self.num_keypoints)
         )
-        """
 
-        
+        """
         self.my_dict["swinunetr"] = SwinUNETR(
             img_size=(self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']),
             in_channels=self.config.dataset['IMG_CHANNELS'],
@@ -81,6 +77,7 @@ class KeypointNetModule(pl.LightningModule):
         )
 
         self.my_dict["kornia_keypoints"] = SpatialSoftArgmax2d(temperature=torch.tensor(1.0), normalized_coordinates=False)
+        """
 
         """
         self.my_dict["swinunetr_pipeline"] = nn.Sequential(
@@ -102,14 +99,16 @@ class KeypointNetModule(pl.LightningModule):
         Returns:
             the forward pass of the dataset.
         """
-        """
+        #"""
         x = self.my_dict["pre_block"](x)
         x = self.my_dict["resnet"](x)
         x = self.my_dict["keypoints"](x)
-        """
+        #"""
 
+        """
         x = self.my_dict["swinunetr"](x)
         x = self.my_dict["kornia_keypoints"](x)
+        """
 
         #print("x shape: " + str(x.shape))     # testing line
 
