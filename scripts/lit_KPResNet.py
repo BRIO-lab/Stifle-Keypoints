@@ -111,11 +111,11 @@ class KeypointNetModule(pl.LightningModule):
         x = self.my_dict["swinunetr"](x)
         x = self.my_dict["kornia_keypoints"](x)
 
-        print("x shape: " + str(x.shape))     # testing line
+        #print("x shape: " + str(x.shape))     # testing line
 
         # Reshape keypoints to be (batch_size, num_keypoints, 2)
         keypoints = x.view(-1, self.num_keypoints, 2)
-        print("keypoints shape: " + str(keypoints.shape))
+        #print("keypoints shape: " + str(keypoints.shape))
         return keypoints
 
     def configure_optimizers(self):
