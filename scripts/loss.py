@@ -78,8 +78,12 @@ class res_kp_loss(torch.nn.Module):
     def __init__(self, gaussian_amp=1, gaussian_sigma=1):
         super(res_kp_loss, self).__init__()
         #self.mse = torch.nn.MSELoss()
-        self.gaussian_amp = gaussian_amp
-        self.gaussian_sigma = gaussian_sigma
+        #self.gaussian_amp = gaussian_amp
+        #self.gaussian_sigma = gaussian_sigma
+
+        self.HEIGHT = 1024
+        self.WIDTH = 1024
+        self.outer_bound_weight = 0.01
 
     def forward(self, output, target):
         """
@@ -88,8 +92,6 @@ class res_kp_loss(torch.nn.Module):
         The target is [batch_size, num_keypoints, 2].
         """
 
-        #print("output shape: " + str(output.shape))
-        #print("target shape: " + str(target.shape))
         batch_size = target.shape[0]
         #num_keypoints = int(target.shape[1] / 2)     # Since the output is 2 * num_keypoints per batch.
         num_keypoints = target.shape[1]     # Since the output is 2 * num_keypoints per batch.
@@ -98,21 +100,35 @@ class res_kp_loss(torch.nn.Module):
         # The model output is (num_keypoint,2) since we changed the module forward method on 3/16/23
         assert output.shape[1] == num_keypoints, 'output.shape[1] is ' + str(output.shape[1]) + ' but num_keypoints is ' + str(num_keypoints)
         assert output.shape[2] == 2, 'output.shape[2] is ' + str(output.shape[2]) + ' but should be 2'
-        #output = output.view(batch_size, num_keypoints, 2)
-        #print("output shape: " + str(output.shape))
-        #print("target shape: " + str(target.shape))
-        #print("output shape: " + str(output.shape))
-        #print("target shape: " + str(target.shape))
-        #print("asdf: " + str(output[0][0][0]))
-        #print("asdf: " + str(2*output[0][0][0]))
 
         for batch_idx, _ in enumerate(target):
             for i in range(0, num_keypoints):
                 #raw_batch_loss += self.gaussian(output[batch_idx][i], target[batch_idx][i])
-                raw_batch_loss += self.mse(output[batch_idx][i], target[batch_idx][i])
+
+                # We want to de-weight the keypoints which are beyond the image size.
+                # Weight is 1 only if the keypoint is within 0 and the image bounds. Negative values are outside the image.
+                #weight = 1 if (target[batch_idx][i][0].item() in range(0, self.WIDTH) and target[batch_idx][i][1].item() in range(0, self.HEIGHT)) else self.outer_bound_weight
+                weight = 1
+                if target[batch_idx][i][0].item() < 0 or target[batch_idx][i][0].item() > self.WIDTH:
+                    weight = self.outer_bound_weight 
+                if target[batch_idx][i][1].item() < 0 or target[batch_idx][i][1].item() > self.HEIGHT:
+                    weight = self.outer_bound_weight
+                #weight = 1 if (target[batch_idx][i][0] < self.WIDTH and target[batch_idx][i][1] < self.HEIGHT) else self.outer_bound_weight
+                raw_single_kp_loss = self.mse(output[batch_idx][i], target[batch_idx][i])
+                weighted_single_kp_loss = weight * raw_single_kp_loss
+                raw_batch_loss += weighted_single_kp_loss
+
+                # print the whether the keypoint is within the image bounds and its loss
+                #print("kp " + str(i) + " is within bounds: " + str(weight == 1) + " and has loss: " + str(weighted_single_kp_loss))
+                # print the target kp
+                #print("target kp: " + str(target[batch_idx][i][0].item()) + ", " + str(target[batch_idx][i][1].item()))
 
         avg_loss = raw_batch_loss / batch_size
         return avg_loss
+
+
+
+
     
     # ? Should we use the built-in MSE loss function here?
     def mse(self, pred, target):
