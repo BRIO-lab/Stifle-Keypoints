@@ -45,6 +45,7 @@ def create_config_dict(config) -> dict:
                     'dataset/Image Channels': config.dataset['IMG_CHANNELS'],
                     'dataset/Image Threshold': config.dataset['IMAGE_THRESHOLD'],
                     'dataset/Using Albumentations': config.dataset['USE_ALBUMENTATIONS'],
+                    'dataset/Dilation Kernel Set': config.dataset['KERNEL_SET'],
                     'datamodule/Image Directory': config.datamodule['IMAGE_DIRECTORY'],
                     'datamodule/Starting Checkpoint File': str(config.datamodule['CKPT_FILE']),
                     'datamodule/Saved Checkpoint File': str(config.datamodule['SAVE_CKPT']),

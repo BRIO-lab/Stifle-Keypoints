@@ -29,7 +29,8 @@ class KeypointNetModule(pl.LightningModule):
         self.wandb_run = wandb_run
         self.loss_fn = res_kp_loss(
             gaussian_amp=self.config.dataset['GAUSSIAN_AMP'],
-            gaussian_sigma=self.config.dataset['GAUSSIAN_STDDEV']
+            gaussian_sigma=self.config.dataset['GAUSSIAN_STDDEV'],
+            weighted_loss=self.config.loss['WEIGHTED_LOSS']
             )
 
         # ! Good grief what a hack. This is only for local testing.

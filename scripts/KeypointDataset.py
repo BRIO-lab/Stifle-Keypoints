@@ -100,7 +100,8 @@ class KeypointDataset(torch.utils.data.Dataset):
             seg_label = label_normed
 
             # Make a set of kernels and choose one at random. This is to prevent the model from learning the size of the kernel.
-            kernel_set = [(10,10), (20,20), (30,30), (40,40), (50,50)]
+            kernel_set = self.config.dataset['KERNEL_SET']
+            #kernel_set = [(10,10), (20,20), (30,30), (40,40), (50,50)]
             #kernel_set = [(30,30)]
             kernel = np.ones(random.choice(kernel_set), np.uint8)
             #kernel = np.ones((30,30), np.uint8)

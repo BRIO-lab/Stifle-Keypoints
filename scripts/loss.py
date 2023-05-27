@@ -75,12 +75,13 @@ class kp_loss(torch.nn.Module):
 
 class res_kp_loss(torch.nn.Module):
     # TODO: This does not use any Gaussian function. It just uses MSE. Should we remove all the Gaussian stuff?
-    def __init__(self, gaussian_amp=1, gaussian_sigma=1):
+    def __init__(self, gaussian_amp=1, gaussian_sigma=1, weighted_loss=False):
         super(res_kp_loss, self).__init__()
         #self.mse = torch.nn.MSELoss()
         #self.gaussian_amp = gaussian_amp
         #self.gaussian_sigma = gaussian_sigma
 
+        self.weighted_loss = weighted_loss
         self.HEIGHT = 1024
         self.WIDTH = 1024
         self.outer_bound_weight = 0.01
@@ -109,10 +110,11 @@ class res_kp_loss(torch.nn.Module):
                 # Weight is 1 only if the keypoint is within 0 and the image bounds. Negative values are outside the image.
                 #weight = 1 if (target[batch_idx][i][0].item() in range(0, self.WIDTH) and target[batch_idx][i][1].item() in range(0, self.HEIGHT)) else self.outer_bound_weight
                 weight = 1
-                if target[batch_idx][i][0].item() < 0 or target[batch_idx][i][0].item() > self.WIDTH:
-                    weight = self.outer_bound_weight 
-                if target[batch_idx][i][1].item() < 0 or target[batch_idx][i][1].item() > self.HEIGHT:
-                    weight = self.outer_bound_weight
+                if self.weighted_loss:
+                    if target[batch_idx][i][0].item() < 0 or target[batch_idx][i][0].item() > self.WIDTH:
+                        weight = self.outer_bound_weight 
+                    if target[batch_idx][i][1].item() < 0 or target[batch_idx][i][1].item() > self.HEIGHT:
+                        weight = self.outer_bound_weight
                 #weight = 1 if (target[batch_idx][i][0] < self.WIDTH and target[batch_idx][i][1] < self.HEIGHT) else self.outer_bound_weight
                 raw_single_kp_loss = self.mse(output[batch_idx][i], target[batch_idx][i])
                 weighted_single_kp_loss = weight * raw_single_kp_loss
