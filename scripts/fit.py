@@ -76,8 +76,10 @@ def main(config, wandb_run):
     trainer.save_checkpoint(CKPT_DIR + config.init['WANDB_RUN_GROUP'] + config.init['MODEL_NAME'] + '.ckpt')
     
     # Save model using Wandb
-    wandb.save(CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] + '.ckpt')
-    wandb_run.config.update({'Model Save Directory': CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] + '.ckpt'})
+    #wandb.save(CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] + '.ckpt')
+    #wandb_run.config.update({'Model Save Directory': CKPT_DIR + config.init['WANDB_RUN_GROUP'] + '/' + config.init['MODEL_NAME'] + '.ckpt'})
+    wandb.save(config.datamodule['SAVE_CKPT'])
+    wandb_run.config.update({'Model Save Directory': config.datamodule['SAVE_CKPT']})
 
 if __name__ == '__main__':
 
