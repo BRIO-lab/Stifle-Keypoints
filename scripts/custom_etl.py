@@ -19,8 +19,8 @@ import csv
 # * Set the parameters
 #ROOT_DIR = os.getcwd()
 ROOT_DIR = '/home/sasank/Documents/GitRepos/Stifle-Keypoints/'
-RAW_DATA_FILE = os.path.join(ROOT_DIR, 'data', 'pruned_ISTA.csv')
-ETL_NAME = 'ISTA_Split'
+RAW_DATA_FILE = os.path.join(ROOT_DIR, 'data', 'better_pruned_ISTA.csv')
+ETL_NAME = 'MS_Split'
 NAIVE_PATIENT_NUMBER = 9
 TEST_SIZE = 0.2
 VAL_SIZE = 0.2
@@ -36,11 +36,6 @@ Write the 4 CSVs to the data/ETL_NAME directory
 # * Load the raw data file
 raw_data = pd.read_csv(RAW_DATA_FILE)
 print('Raw data shape: ', raw_data.shape)
-
-# ! Remove Patient 3 Session 1 because the ground truth is wrong - we handled this by removing the data from the raw data file using PnP-Solver/big_data/prune_data.py
-#raw_data.drop(raw_data[(raw_data['Patient number'] == 3) & (raw_data['Session number'] == 1)].index, inplace=True)
-
-#raw_data.to_csv(os.path.join(ROOT_DIR, 'data', 'asdf_proc_64KP_data.csv'), index=False)
 
 print(raw_data.shape)
 

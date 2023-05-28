@@ -41,14 +41,15 @@ class Configuration:
             'SUBSET_PIXELS': True,
             'IMAGE_HEIGHT': 1024,
             'IMAGE_WIDTH': 1024,
-            'MODEL_TYPE': 'tib',        # how should we do this? not clear this is still best...
+            'MODEL_TYPE': 'fem',        # how should we do this? not clear this is still best...
             'CLASS_LABELS': {0: 'bone', 1: 'background'},
             'NUM_KEY_POINTS': 64,
             'IMG_CHANNELS': 1,      # Is this different from self.module['NUM_IMAGE_CHANNELS']
             'STORE_DATA_RAM': False,
             'IMAGE_THRESHOLD': 0,
             'USE_ALBUMENTATIONS': False,
-            'KERNEL_SET': [(10,10), (20,20), (30,30), (40,40), (50,50)],
+            'KERNEL_SET': [(30,30)],
+            #'KERNEL_SET': [(10,10), (20,20), (30,30), (40,40), (50,50)],
 
             # What do these do?
             'NUM_PRINT_IMG' : 1,
@@ -84,12 +85,13 @@ class Configuration:
             'IMAGE_DIRECTORY': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/TPLO_Ten_Dogs_grids/',
             #'CKPT_FILE': '~/Documents/GitRepos/Stifle-Keypoints/checkpoints/Tib64_200Epochs.ckpt',
             #'CKPT_FILE': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/Stifle-Keypoint-checkpoints/FemISTA300_horFlip_FK.ckpt',
-            'CKPT_FILE': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/Stifle-Keypoint-checkpoints/TibISTA300_flips_RK.ckpt',
+            'CKPT_FILE': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/Stifle-Keypoint-checkpoints/FemISTA100_200_200_100_vertFlip.ckpt',
+            #'CKPT_FILE': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/Stifle-Keypoint-checkpoints/FemISTA100_200_200_RK_Weight.ckpt',
             'SAVE_CKPT': '/media/sasank/LinuxStorage/Dropbox (UFL)/Canine Kinematics Data/Stifle-Keypoint-checkpoints/my_model_asdf.ckpt',
-            'USE_NAIVE_TEST_SET': True,
+            'USE_NAIVE_TEST_SET': False,
             'BATCH_SIZE': 1,
             'SHUFFLE': True,        # Only for training; for test and val this is set in the datamodule script to False
-            'NUM_WORKERS': 2,
+            'NUM_WORKERS': 1,
             'PIN_MEMORY': False
             #'SUBSET_PIXELS': True - this is now in dataset
         }
