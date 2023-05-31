@@ -45,6 +45,9 @@ class KeypointNetModule(pl.LightningModule):
 
         self.my_dict = nn.ModuleDict({})
 
+        # ******** Resnet 152 Architecture ********
+
+        """
         self.my_dict["pre_block"] = nn.Sequential(
             nn.Conv2d(self.in_channels, 3, kernel_size=1, stride=1, padding=0, bias=False),     # This is just to convert the input channels to 3, which is what the resnet expects.
             nn.BatchNorm2d(3),
@@ -68,8 +71,12 @@ class KeypointNetModule(pl.LightningModule):
             nn.ReLU(),
             nn.Linear(250, 2 * self.num_keypoints)
         )
-
         """
+    
+        # ******** End Resnet 152 Architecture ********
+
+        # ******** SwinUNETR Architecture ********
+
         self.my_dict["swinunetr"] = SwinUNETR(
             img_size=(self.config.dataset['IMAGE_HEIGHT'], self.config.dataset['IMAGE_WIDTH']),
             in_channels=self.config.dataset['IMG_CHANNELS'],
@@ -78,15 +85,13 @@ class KeypointNetModule(pl.LightningModule):
         )
 
         self.my_dict["kornia_keypoints"] = SpatialSoftArgmax2d(temperature=torch.tensor(1.0), normalized_coordinates=False)
-        """
 
-        """
-        self.my_dict["swinunetr_pipeline"] = nn.Sequential(
-            swinunetr,
-            kornia_spatial_soft_argmax
-        )
-        """
+        #self.my_dict["swinunetr_pipeline"] = nn.Sequential(
+        #    swinunetr,
+        #    kornia_spatial_soft_argmax
+        #)
         
+        # ******** End SwinUNETR Architecture ********
 
         
         
@@ -100,16 +105,19 @@ class KeypointNetModule(pl.LightningModule):
         Returns:
             the forward pass of the dataset.
         """
-        #"""
+
+        # * Resnet 152
+        """
         x = self.my_dict["pre_block"](x)
         x = self.my_dict["resnet"](x)
         x = self.my_dict["keypoints"](x)
-        #"""
-
         """
+
+        # * SwinUNETR
+        #"""
         x = self.my_dict["swinunetr"](x)
         x = self.my_dict["kornia_keypoints"](x)
-        """
+        #"""
 
         #print("x shape: " + str(x.shape))     # testing line
 
